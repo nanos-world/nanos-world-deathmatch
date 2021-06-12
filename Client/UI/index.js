@@ -96,22 +96,22 @@ function SortScoreboard() {
     }
 
 	// Fix the scoreboard at the top of the screen with the sorted data
-    for (let i = 0,; i < 10; i++) {
+    for (let i = 0; i < 10; i++) {
 		let name = "";
 		let score = "";
 
 		if (i < store.length) {
-			name = store[i][1].cells[1];
-			score = store[i][1].cells[2];
+			name = store[i][1].cells[1].innerText;
+			score = store[i][1].cells[2].innerText;
 		}
 
 		const rank_entry = document.getElementById(`scoreboard_rank_entry_${i}`);
 
 		const rank_entry_image = rank_entry.querySelector(".scoreboard_rank_image");
-		rank_entry_image.innerHTML = name.innerText.substring(0, 3).toUpperCase();
+		rank_entry_image.innerHTML = name.substring(0, 3).toUpperCase();
 
 		const rank_entry_score = rank_entry.querySelector(".scoreboard_rank_score");
-		rank_entry_score.innerHTML = score.innerText;
+		rank_entry_score.innerHTML = score;
 	}
 }
 

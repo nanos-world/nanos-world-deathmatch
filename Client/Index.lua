@@ -65,7 +65,10 @@ end)
 
 -- When package loads, verify if LocalPlayer already exists (eg. when reloading the package), then try to get and store it's controlled character
 Package:Subscribe("Load", function()
-	Events:CallRemote("PlayerReady", {})
+	Timer:SetTimeout(200, function()
+		Events:CallRemote("PlayerReady", {})
+		return false
+	end)
 
 	if (NanosWorld:GetLocalPlayer() ~= nil) then
 		UpdateLocalCharacter(NanosWorld:GetLocalPlayer():GetControlledCharacter())
