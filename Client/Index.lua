@@ -161,7 +161,7 @@ end)
 -- Receives from server the current match_state and remaining_time
 Events:Subscribe("UpdateMatchState", function(match_state, remaining_time)
 	Deathmatch.match_state = match_state
-	Deathmatch.remaining_time = remaining_time - 3
+	Deathmatch.remaining_time = remaining_time - 1
 
 	local label = ""
 
@@ -185,7 +185,7 @@ Events:Subscribe("UpdateMatchState", function(match_state, remaining_time)
 	end
 
 	-- Calls UI to display the current match status and current remaining_time
-	MainHUD:CallEvent("UpdateMatchStatus", { label, remaining_time })
+	MainHUD:CallEvent("UpdateMatchStatus", { label, Deathmatch.remaining_time })
 end)
 
 -- Helpers for spawning sounds

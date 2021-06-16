@@ -71,11 +71,11 @@ DeathmatchSettings = {
 	match_time = 300,
 	post_time = 15,
 	multikill_time = 4,
-	multikill_time_multiplier = 0.5,
+	multikill_time_multiplier = 1,
 	spawn_locations = {
 		Vector(-100, -100, 100)
 	},
-	weapons_to_use = "Quaternius" -- "Default"
+	weapons_to_use = "Default" -- "Default"
 }
 
 -- Deathmatch Data
@@ -265,6 +265,13 @@ Character:Subscribe("Death", function(character, last_damage_taken, last_bone_da
 		-- Adds a death to count
 		AddDeath(dead_player, instigator)
 
+		-- Immediately destroys the wepaon
+		local weapon = dead_player:GetValue("Weapon")
+
+		if (weapon and weapon:IsValid()) then
+			weapon:Destroy()
+		end
+
 		-- Respawns after 5 seconds
 		Timer:SetTimeout(5000, function(_player)
 			if (Deathmatch.match_state ~= MATCH_STATES.POST_TIME) then
@@ -427,9 +434,9 @@ function RespawnPlayer(player)
 	if (character) then
 
 		-- If has a weapon, destroys it
-		local weapon = character:GetValue("Weapon")
+		local weapon = player:GetValue("Weapon")
 
-		if (weapon) then
+		if (weapon and weapon:IsValid()) then
 			weapon:Destroy()
 		end
 
@@ -447,7 +454,7 @@ function RespawnPlayer(player)
 	local weapon = SpawnWeapon()
 	weapon:SetAmmoBag(weapon:GetAmmoClip() * 3)
 
-	character:SetValue("Weapon", weapon)
+	player:SetValue("Weapon", weapon)
 	character:PickUp(weapon)
 
 	-- Sets the character invulnerable for 3 seconds
@@ -468,17 +475,19 @@ end
 
 -- Helper for spawning weapons
 function SpawnWeapon()
-	if (DeathmatchSettings.weapons_to_use == "Default") then
-		local weapon_func = DefaultWeapons[math.random(#DefaultWeapons)]
-		return weapon_func()
-	end
-
 	-- Custom spawn for Quaternius weapons
 	if (DeathmatchSettings.weapons_to_use == "Quaternius") then
 		local weapon_name = QuaterniusWeapons[math.random(#QuaterniusWeapons)]
-		local weapon = Package:Call("QuaterniusTools", weapon_name, {})
-		return weapon
+		local weapon = Package:Call("QuaterniusTools", weapon_name, {}, false)
+
+		if (weapon) then
+			return weapon
+		end
 	end
+
+	-- If custom weapons didn't work or the default weapon is NanosWorldDefault weapons, spawns it
+	local weapon_func = DefaultWeapons[math.random(#DefaultWeapons)]
+	return weapon_func()
 end
 
 -- Helper for spawning a Power Up
