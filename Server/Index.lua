@@ -1,4 +1,4 @@
-Package:RequirePackage("NanosWorldWeapons")
+Package.RequirePackage("NanosWorldWeapons")
 
 -- List of the Default Weapons
 DefaultWeapons = {
@@ -110,14 +110,13 @@ end
 -- Helper for spawning an announcer sound
 function SpawnActionSound(location, asset, player)
 	-- We make a small delay to sound better
-	Timer:SetTimeout(300, function(_asset)
+	Timer.SetTimeout(function(_asset)
 		if (player) then
-			Events:CallRemote("SpawnActionSound", player, { location, _asset })
+			Events.CallRemote("SpawnActionSound", player, location, _asset)
 		else
-			Events:BroadcastRemote("SpawnActionSound", { location, _asset })
+			Events.BroadcastRemote("SpawnActionSound", location, _asset)
 		end
-		return false
-	end, {asset})
+	end, 300, asset)
 end
 
 -- Function to Add a Kill to the Player's kill count
@@ -145,7 +144,7 @@ function AddKill(player, location)
 	if (kill_streak >= 5) then
 		local label, sound_asset, score = GetKillStreakLabel(kill_streak)
 
-		Server:BroadcastChatMessage("<cyan>" .. player:GetName() .. "</> is on a <red>" .. kill_streak .. "</> kill streak!")
+		Server.BroadcastChatMessage("<cyan>" .. player:GetName() .. "</> is on a <red>" .. kill_streak .. "</> kill streak!")
 
 		if (label) then
 			-- Adds a score for kill streak
@@ -164,7 +163,7 @@ function AddKill(player, location)
 
 		local label, sound_asset, score = GetMultiKillLabel(multikill_count)
 
-		Server:BroadcastChatMessage("<cyan>" .. player:GetName() .. "</> made a <red>" .. label .. "</>")
+		Server.BroadcastChatMessage("<cyan>" .. player:GetName() .. "</> made a <red>" .. label .. "</>")
 
 		-- Adds a score for multi kill
 		AddScore(player, score, "multikill", label)
@@ -194,7 +193,7 @@ function AddDeath(player, instigator)
 			-- Adds score for that
 			AddScore(instigator, 50, "killstreak_ended", "KILLSTREAK ENDED")
 
-			Server:BroadcastChatMessage("<cyan>" .. instigator:GetName() .. "</> ended <cyan>" .. player:GetName() .. "'s</> <red>" .. kill_streak .. "</> streak!")
+			Server.BroadcastChatMessage("<cyan>" .. instigator:GetName() .. "</> ended <cyan>" .. player:GetName() .. "'s</> <red>" .. kill_streak .. "</> streak!")
 		end
 	end
 
@@ -209,12 +208,12 @@ function AddScore(player, score, id, label, use_current_label, silence)
 
 	if (not silence) then
 		-- Calls the player to notify the Score
-		Events:CallRemote("AddScore", player, {score, id, label, use_current_label or false})
+		Events.CallRemote("AddScore", player, score, id, label, use_current_label or false)
 	end
 end
 
 -- Adds score when damaging
-Character:Subscribe("TakeDamage", function(character, damage, bone, type, from, instigator)
+Character.Subscribe("TakeDamage", function(character, damage, bone, type, from, instigator)
 	-- If it's suicide, ignore it
 	if (not instigator or instigator == character:GetPlayer()) then
 		return
@@ -231,7 +230,7 @@ Character:Subscribe("TakeDamage", function(character, damage, bone, type, from, 
 end)
 
 -- When a character dies, check if I was the last one to do damage on him and displays on the screen as a kill
-Character:Subscribe("Death", function(character, last_damage_taken, last_bone_damaged, damage_type_reason, hit_from_direction, instigator)
+Character.Subscribe("Death", function(character, last_damage_taken, last_bone_damaged, damage_type_reason, hit_from_direction, instigator)
 	local dead_player = character:GetPlayer()
 
 	if (instigator) then
@@ -273,22 +272,19 @@ Character:Subscribe("Death", function(character, last_damage_taken, last_bone_da
 		end
 
 		-- Respawns after 5 seconds
-		Timer:SetTimeout(5000, function(_player)
+		Timer.SetTimeout(function(_player)
 			if (Deathmatch.match_state ~= MATCH_STATES.POST_TIME) then
 				RespawnPlayer(_player)
 			end
-
-			return false
-		end, {dead_player})
+		end, 5000, dead_player)
 	end
 end)
 
 -- When package load, starts a Warm Up
-Package:Subscribe("Load", function()
-	Timer:SetTimeout(100, function()
+Package.Subscribe("Load", function()
+	Timer.SetTimeout(function()
 		UpdateMatchState(MATCH_STATES.WARM_UP)
-		return false
-	end)
+	end, 100)
 end)
 
 -- Helper for updating the match state
@@ -298,18 +294,18 @@ function UpdateMatchState(new_state)
 	if (new_state == MATCH_STATES.WARM_UP) then
 		Deathmatch.remaining_time = DeathmatchSettings.warmup_time
 
-		Package:Log("[Deathmatch] Warm-up!")
-		Server:BroadcastChatMessage("<grey>Warm-up!</>")
+		Package.Log("[Deathmatch] Warm-up!")
+		Server.BroadcastChatMessage("<grey>Warm-up!</>")
 
 		CleanUp()
 
 	elseif (new_state == MATCH_STATES.PREPARING) then
 		Deathmatch.remaining_time = DeathmatchSettings.preparing_time
 
-		Events:BroadcastRemote("SpawnSound", {Vector(), "UnrealTournamentAnnouncer::A_Prepare", true, 1, 1})
+		Events.BroadcastRemote("SpawnSound", Vector(), "UnrealTournamentAnnouncer::A_Prepare", true, 1, 1)
 
-		Package:Log("[Deathmatch] Preparing!")
-		Server:BroadcastChatMessage("<grey>Preparing!</>")
+		Package.Log("[Deathmatch] Preparing!")
+		Server.BroadcastChatMessage("<grey>Preparing!</>")
 
 		CleanUp()
 
@@ -323,10 +319,10 @@ function UpdateMatchState(new_state)
 		Deathmatch.remaining_time = DeathmatchSettings.match_time
 		Deathmatch.first_blood = false
 
-		Events:BroadcastRemote("SpawnSound", {Vector(), "UnrealTournamentAnnouncer::A_Proceed", true, 1, 1})
+		Events.BroadcastRemote("SpawnSound", Vector(), "UnrealTournamentAnnouncer::A_Proceed", true, 1, 1)
 
-		Package:Log("[Deathmatch] Round started!")
-		Server:BroadcastChatMessage("<grey>Round Started!</>")
+		Package.Log("[Deathmatch] Round started!")
+		Server.BroadcastChatMessage("<grey>Round Started!</>")
 
 		-- Unfreeze all characters
 		for k, character in pairs(NanosWorld:GetCharacters()) do
@@ -344,8 +340,8 @@ function UpdateMatchState(new_state)
 		end
 
 		-- Match summary
-		Server:BroadcastChatMessage("<green>End of match!</> Scoreboard:")
-		Server:BroadcastChatMessage("<grey>=============================</>")
+		Server.BroadcastChatMessage("<green>End of match!</> Scoreboard:")
+		Server.BroadcastChatMessage("<grey>=============================</>")
 
 		local player_rank = {}
 
@@ -358,18 +354,18 @@ function UpdateMatchState(new_state)
 		for rank, player in pairs(player_rank) do
 			-- Plays announcer sound if winner or last place
 			if (rank == 1) then
-				Events:CallRemote("SpawnSound", player, {Vector(), "UnrealTournamentAnnouncer::A_Winner", true, 1, 1})
+				Events.CallRemote("SpawnSound", player, Vector(), "UnrealTournamentAnnouncer::A_Winner", true, 1, 1)
 			elseif (rank == #player_rank) then
-				Events:CallRemote("SpawnSound", player, {Vector(), "UnrealTournamentAnnouncer::A_LastPlace", true, 1, 1})
+				Events.CallRemote("SpawnSound", player, Vector(), "UnrealTournamentAnnouncer::A_LastPlace", true, 1, 1)
 			end
 
-			Server:BroadcastChatMessage(tostring(rank) .. "# <cyan>" .. player:GetName() .. "</>: " .. tostring(player:GetValue("Score") or 0))
+			Server.BroadcastChatMessage(tostring(rank) .. "# <cyan>" .. player:GetName() .. "</>: " .. tostring(player:GetValue("Score") or 0))
 		end
 
-		Server:BroadcastChatMessage("<grey>=============================</>")
+		Server.BroadcastChatMessage("<grey>=============================</>")
 
-		Package:Log("[Deathmatch] Post time!")
-		Server:BroadcastChatMessage("<grey>Post time!</>")
+		Package.Log("[Deathmatch] Post time!")
+		Server.BroadcastChatMessage("<grey>Post time!</>")
 	end
 
 	-- Sends to the player the new match state
@@ -377,7 +373,7 @@ function UpdateMatchState(new_state)
 end
 
 -- When player joins and/or is ready
-Events:Subscribe("PlayerReady", function(player)
+Events.Subscribe("PlayerReady", function(player)
 	-- If the match is about to end, don't do nothing
 	if (Deathmatch.match_state ~= MATCH_STATES.POST_TIME) then
 		-- Respawns the character
@@ -393,18 +389,18 @@ Events:Subscribe("PlayerReady", function(player)
 	-- Sends him the match state
 	UpdatePlayerMatchState(player)
 
-	Server:BroadcastChatMessage("<cyan>" .. player:GetName() .. "</> has joined the server")
+	Server.BroadcastChatMessage("<cyan>" .. player:GetName() .. "</> has joined the server")
 end)
 
 -- When Player leaves the server
-Player:Subscribe("Destroy", function(player)
+Player.Subscribe("Destroy", function(player)
 	-- Destroy it's Character
 	local character = player:GetControlledCharacter()
 	if (character) then
 		character:Destroy()
 	end
 
-	Server:BroadcastChatMessage("<cyan>" .. player:GetName() .. "</> has left the server")
+	Server.BroadcastChatMessage("<cyan>" .. player:GetName() .. "</> has left the server")
 end)
 
 -- Helper for cleaning up deathmatch data from player
@@ -461,14 +457,12 @@ function RespawnPlayer(player)
 	character:SetInvulnerable(true)
 	character:SetMaterialColorParameter("Tint", Color.BLUE)
 
-	Timer:SetTimeout(3000, function(_character)
+	Timer.SetTimeout(function(_character)
 		if (_character and _character:IsValid()) then
 			character:SetMaterialColorParameter("Tint", Color.WHITE)
 			_character:SetInvulnerable(false)
 		end
-
-		return false
-	end, {character})
+	end, 3000, character)
 
 	return character
 end
@@ -478,7 +472,7 @@ function SpawnWeapon()
 	-- Custom spawn for Quaternius weapons
 	if (DeathmatchSettings.weapons_to_use == "Quaternius") then
 		local weapon_name = QuaterniusWeapons[math.random(#QuaterniusWeapons)]
-		local weapon = Package:Call("QuaterniusTools", weapon_name, {}, false)
+		local weapon = Package.Call("quaternius-tools", weapon_name, {}, false)
 
 		if (weapon) then
 			return weapon
@@ -524,21 +518,20 @@ function SpawnPowerUp(location)
 			end
 
 			-- Calls remote to force the player to update the Health/Ammo HUD
-			Events:CallRemote("PickedUpPowerUp", object:GetPlayer(), {})
+			Events.CallRemote("PickedUpPowerUp", object:GetPlayer())
 
 			self:Destroy()
 		end
 	end)
 
 	-- Destroys the Power Up after 30 seconds
-	Timer:SetTimeout(30000, function(_trigger)
+	Timer.SetTimeout(function(_trigger)
 		if (_trigger and _trigger:IsValid()) then
 			_trigger:GetValue("Prop_01"):Destroy()
 			_trigger:GetValue("Prop_02"):Destroy()
 			_trigger:Destroy()
 		end
-		return false
-	end, {trigger})
+	end, 30000, trigger)
 end
 
 -- Helper for updating the player's match state
@@ -546,9 +539,9 @@ function UpdatePlayerMatchState(player)
 	local data = { Deathmatch.match_state, Deathmatch.remaining_time }
 
 	if (player) then
-		Events:CallRemote("UpdateMatchState", player, data)
+		Events.CallRemote("UpdateMatchState", player, data)
 	else
-		Events:BroadcastRemote("UpdateMatchState", data)
+		Events.BroadcastRemote("UpdateMatchState", data)
 	end
 end
 
@@ -560,24 +553,24 @@ end
 
 -- Helper for announcing the current match time
 function AnnounceCountdown()
-	if (Deathmatch.remaining_time == 300) then Events:BroadcastRemote("SpawnSound", {Vector(), "UnrealTournamentAnnouncer::A_Countdown_05_Minutes", true, 1, 1}) return end
-	if (Deathmatch.remaining_time == 180) then Events:BroadcastRemote("SpawnSound", {Vector(), "UnrealTournamentAnnouncer::A_Countdown_03_Minutes", true, 1, 1}) return end
-	if (Deathmatch.remaining_time == 60) then Events:BroadcastRemote("SpawnSound", {Vector(), "UnrealTournamentAnnouncer::A_Countdown_01_Minute", true, 1, 1}) return end
-	if (Deathmatch.remaining_time == 30) then Events:BroadcastRemote("SpawnSound", {Vector(), "UnrealTournamentAnnouncer::A_Countdown_30_Seconds", true, 1, 1}) return end
-	if (Deathmatch.remaining_time == 10) then Events:BroadcastRemote("SpawnSound", {Vector(), "UnrealTournamentAnnouncer::A_Countdown_10", true, 1, 1}) return end
-	if (Deathmatch.remaining_time == 9) then Events:BroadcastRemote("SpawnSound", {Vector(), "UnrealTournamentAnnouncer::A_Countdown_09", true, 1, 1}) return end
-	if (Deathmatch.remaining_time == 8) then Events:BroadcastRemote("SpawnSound", {Vector(), "UnrealTournamentAnnouncer::A_Countdown_08", true, 1, 1}) return end
-	if (Deathmatch.remaining_time == 7) then Events:BroadcastRemote("SpawnSound", {Vector(), "UnrealTournamentAnnouncer::A_Countdown_07", true, 1, 1}) return end
-	if (Deathmatch.remaining_time == 6) then Events:BroadcastRemote("SpawnSound", {Vector(), "UnrealTournamentAnnouncer::A_Countdown_06", true, 1, 1}) return end
-	if (Deathmatch.remaining_time == 5) then Events:BroadcastRemote("SpawnSound", {Vector(), "UnrealTournamentAnnouncer::A_Countdown_05", true, 1, 1}) return end
-	if (Deathmatch.remaining_time == 4) then Events:BroadcastRemote("SpawnSound", {Vector(), "UnrealTournamentAnnouncer::A_Countdown_04", true, 1, 1}) return end
-	if (Deathmatch.remaining_time == 3) then Events:BroadcastRemote("SpawnSound", {Vector(), "UnrealTournamentAnnouncer::A_Countdown_03", true, 1, 1}) return end
-	if (Deathmatch.remaining_time == 2) then Events:BroadcastRemote("SpawnSound", {Vector(), "UnrealTournamentAnnouncer::A_Countdown_02", true, 1, 1}) return end
-	if (Deathmatch.remaining_time == 1) then Events:BroadcastRemote("SpawnSound", {Vector(), "UnrealTournamentAnnouncer::A_Countdown_01", true, 1, 1}) return end
+	if (Deathmatch.remaining_time == 300) then Events.BroadcastRemote("SpawnSound", Vector(), "UnrealTournamentAnnouncer::A_Countdown_05_Minutes", true, 1, 1) return end
+	if (Deathmatch.remaining_time == 180) then Events.BroadcastRemote("SpawnSound", Vector(), "UnrealTournamentAnnouncer::A_Countdown_03_Minutes", true, 1, 1) return end
+	if (Deathmatch.remaining_time == 60) then Events.BroadcastRemote("SpawnSound", Vector(), "UnrealTournamentAnnouncer::A_Countdown_01_Minute", true, 1, 1) return end
+	if (Deathmatch.remaining_time == 30) then Events.BroadcastRemote("SpawnSound", Vector(), "UnrealTournamentAnnouncer::A_Countdown_30_Seconds", true, 1, 1) return end
+	if (Deathmatch.remaining_time == 10) then Events.BroadcastRemote("SpawnSound", Vector(), "UnrealTournamentAnnouncer::A_Countdown_10", true, 1, 1) return end
+	if (Deathmatch.remaining_time == 9) then Events.BroadcastRemote("SpawnSound", Vector(), "UnrealTournamentAnnouncer::A_Countdown_09", true, 1, 1) return end
+	if (Deathmatch.remaining_time == 8) then Events.BroadcastRemote("SpawnSound", Vector(), "UnrealTournamentAnnouncer::A_Countdown_08", true, 1, 1) return end
+	if (Deathmatch.remaining_time == 7) then Events.BroadcastRemote("SpawnSound", Vector(), "UnrealTournamentAnnouncer::A_Countdown_07", true, 1, 1) return end
+	if (Deathmatch.remaining_time == 6) then Events.BroadcastRemote("SpawnSound", Vector(), "UnrealTournamentAnnouncer::A_Countdown_06", true, 1, 1) return end
+	if (Deathmatch.remaining_time == 5) then Events.BroadcastRemote("SpawnSound", Vector(), "UnrealTournamentAnnouncer::A_Countdown_05", true, 1, 1) return end
+	if (Deathmatch.remaining_time == 4) then Events.BroadcastRemote("SpawnSound", Vector(), "UnrealTournamentAnnouncer::A_Countdown_04", true, 1, 1) return end
+	if (Deathmatch.remaining_time == 3) then Events.BroadcastRemote("SpawnSound", Vector(), "UnrealTournamentAnnouncer::A_Countdown_03", true, 1, 1) return end
+	if (Deathmatch.remaining_time == 2) then Events.BroadcastRemote("SpawnSound", Vector(), "UnrealTournamentAnnouncer::A_Countdown_02", true, 1, 1) return end
+	if (Deathmatch.remaining_time == 1) then Events.BroadcastRemote("SpawnSound", Vector(), "UnrealTournamentAnnouncer::A_Countdown_01", true, 1, 1) return end
 end
 
 -- Server Tick to check remaining times
-Timer:SetTimeout(1000, function()
+Timer.SetTimeout(function()
 	if (Deathmatch.match_state == MATCH_STATES.WARM_UP) then
 		if (DecreaseRemainingTime()) then
 			UpdateMatchState(MATCH_STATES.PREPARING)
@@ -599,9 +592,9 @@ Timer:SetTimeout(1000, function()
 			UpdateMatchState(MATCH_STATES.PREPARING)
 		end
 	end
-end)
+end, 1000)
 
 -- Catches a custom event "MapLoaded" to override this script spawn locations
-Events:Subscribe("MapLoaded", function(map_custom_spawn_locations)
+Events.Subscribe("MapLoaded", function(map_custom_spawn_locations)
 	DeathmatchSettings.spawn_locations = map_custom_spawn_locations
 end)

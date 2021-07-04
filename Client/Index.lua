@@ -8,28 +8,28 @@ Deathmatch = {
 	remaining_time = 0
 }
 
--- After 100 ms, calls Battlefield Kill UI to configure it - parameters: enable_autoscore, kill_score, headshot_score
-Timer:SetTimeout(100, function()
-	Events:Call("ConfigureBattlefieldKillUI", { false, 20, 25 })
+-- Calls Battlefield Kill UI to configure it - parameters: enable_autoscore, kill_score, headshot_score
+Package.Subscribe("Load", function()
+	Events.Call("ConfigureBattlefieldKillUI", false, 20, 25)
 	return false
 end)
 
 -- Toggles the Scoreboard
-Client:Subscribe("KeyUp", function(key_name)
+Client.Subscribe("KeyUp", function(key_name)
 	if (key_name == "Tab") then
 		if (Deathmatch.match_state == MATCH_STATES.POST_TIME) then return end
 
-		MainHUD:CallEvent("ToggleScoreboard", {false})
+		MainHUD.CallEvent("ToggleScoreboard", false)
 		ScoreboardToggled = false
 	end
 end)
 
 -- Toggles the Scoreboard
-Client:Subscribe("KeyDown", function(key_name)
+Client.Subscribe("KeyDown", function(key_name)
 	if (key_name == "Tab") then
 		if (Deathmatch.match_state == MATCH_STATES.POST_TIME) then return end
 
-		MainHUD:CallEvent("ToggleScoreboard", {true})
+		MainHUD.CallEvent("ToggleScoreboard", true)
 		ScoreboardToggled = true
 		UpdateAllPlayersScoreboard()
 	end
@@ -37,42 +37,41 @@ end)
 
 -- Updates someone scoreboard data
 function UpdatePlayerScoreboard(player)
-	MainHUD:CallEvent("UpdatePlayer", { player:GetID(), true, player:GetName(), player:GetValue("Score") or 0, player:GetValue("Kills") or 0, player:GetValue("Deaths") or 0, player:GetPing() })
+	MainHUD.CallEvent("UpdatePlayer", player:GetID(), true, player:GetName(), player:GetValue("Score") or 0, player:GetValue("Kills") or 0, player:GetValue("Deaths") or 0, player:GetPing())
 end
 
 --  Adds someone to the scoreboard
-Player:Subscribe("Spawn", function(player)
+Player.Subscribe("Spawn", function(player)
 	UpdatePlayerScoreboard(player)
 end)
 
 function UpdateAllPlayersScoreboard()
-	for k, player in pairs(NanosWorld:GetPlayers()) do
+	for k, player in pairs(NanosWorld.GetPlayers()) do
 		UpdatePlayerScoreboard(player)
 	end
 end
 
 -- Updates the scoreboards data every 1 seconds
-Timer:SetTimeout(1000, function()
+Timer.SetInterval(function()
 	UpdateAllPlayersScoreboard()
-end)
+end, 1000)
 
--- When LocalPlayer spawns, sets an event on it to trigger when we possesses a new character, to store the local controlled character locally. This event is only called once, see Package:Subscribe("Load") to load it when reloading a package
-NanosWorld:Subscribe("SpawnLocalPlayer", function(local_player)
+-- When LocalPlayer spawns, sets an event on it to trigger when we possesses a new character, to store the local controlled character locally. This event is only called once, see Package.Subscribe("Load") to load it when reloading a package
+NanosWorld.Subscribe("SpawnLocalPlayer", function(local_player)
 	local_player:Subscribe("Possess", function(player, character)
 		UpdateLocalCharacter(character)
 	end)
 end)
 
 -- When package loads, verify if LocalPlayer already exists (eg. when reloading the package), then try to get and store it's controlled character
-Package:Subscribe("Load", function()
-	Timer:SetTimeout(200, function()
-		Events:CallRemote("PlayerReady", {})
-		return false
-	end)
+Package.Subscribe("Load", function()
+	Timer.SetTimeout(function()
+		Events.CallRemote("PlayerReady")
+	end, 200)
 
-	if (NanosWorld:GetLocalPlayer() ~= nil) then
-		UpdateLocalCharacter(NanosWorld:GetLocalPlayer():GetControlledCharacter())
-		NanosWorld:GetLocalPlayer():Subscribe("Possess", function(player, character)
+	if (NanosWorld.GetLocalPlayer() ~= nil) then
+		UpdateLocalCharacter(NanosWorld.GetLocalPlayer():GetControlledCharacter())
+		NanosWorld.GetLocalPlayer():Subscribe("Possess", function(player, character)
 			UpdateLocalCharacter(character)
 		end)
 	end
@@ -140,37 +139,37 @@ end
 
 -- Function to update the Ammo's UI
 function UpdateAmmo(enable_ui, ammo, ammo_bag)
-	MainHUD:CallEvent("UpdateWeaponAmmo", {enable_ui, ammo, ammo_bag})
+	MainHUD.CallEvent("UpdateWeaponAmmo", enable_ui, ammo, ammo_bag)
 end
 
 -- Function to update the Health's UI
 function UpdateHealth(health)
-	MainHUD:CallEvent("UpdateHealth", {health})
+	MainHUD.CallEvent("UpdateHealth", health)
 end
 
 -- VOIP UI
-Player:Subscribe("VOIP", function(player, is_talking)
-	MainHUD:CallEvent("ToggleVoice", {player:GetName(), is_talking})
+Player.Subscribe("VOIP", function(player, is_talking)
+	MainHUD.CallEvent("ToggleVoice", player:GetName(), is_talking)
 end)
 
-Player:Subscribe("Destroy", function(player)
-	MainHUD:CallEvent("ToggleVoice", {player:GetName(), false})
-	MainHUD:CallEvent("UpdatePlayer", {player:GetID(), false})
+Player.Subscribe("Destroy", function(player)
+	MainHUD.CallEvent("ToggleVoice", player:GetName(), false)
+	MainHUD.CallEvent("UpdatePlayer", player:GetID(), false)
 end)
 
 -- Receives from server the current match_state and remaining_time
-Events:Subscribe("UpdateMatchState", function(match_state, remaining_time)
-	Deathmatch.match_state = match_state
-	Deathmatch.remaining_time = remaining_time - 1
+Events.Subscribe("UpdateMatchState", function(data)
+	Deathmatch.match_state = data. match_state
+	Deathmatch.remaining_time = data.remaining_time - 1
 
 	local label = ""
 
 	if (Deathmatch.match_state == MATCH_STATES.WARM_UP) then
-		MainHUD:CallEvent("ToggleScoreboard", { false })
+		MainHUD.CallEvent("ToggleScoreboard", false)
 		label = "WARM UP "
 
 	elseif (Deathmatch.match_state == MATCH_STATES.PREPARING) then
-		MainHUD:CallEvent("ToggleScoreboard", { false })
+		MainHUD.CallEvent("ToggleScoreboard", false)
 		label = "STARTING IN "
 
 	elseif (Deathmatch.match_state == MATCH_STATES.IN_PROGRESS) then
@@ -178,35 +177,35 @@ Events:Subscribe("UpdateMatchState", function(match_state, remaining_time)
 
 	elseif (Deathmatch.match_state == MATCH_STATES.POST_TIME) then
 		-- Forces the Scoreboard to appear
-		MainHUD:CallEvent("ToggleScoreboard", { true })
+		MainHUD.CallEvent("ToggleScoreboard", true)
 		UpdateAllPlayersScoreboard()
 		label = "POST TIME "
 
 	end
 
 	-- Calls UI to display the current match status and current remaining_time
-	MainHUD:CallEvent("UpdateMatchStatus", { label, Deathmatch.remaining_time })
+	MainHUD.CallEvent("UpdateMatchStatus", label, Deathmatch.remaining_time)
 end)
 
 -- Helpers for spawning sounds
-Events:Subscribe("SpawnSound", function(location, sound_asset, is_2D, volume, pitch)
+Events.Subscribe("SpawnSound", function(location, sound_asset, is_2D, volume, pitch)
 	Sound(location, sound_asset, is_2D, true, SoundType.SFX, volume, pitch)
 end)
 
-Events:Subscribe("SpawnActionSound", function(location, sound_asset)
+Events.Subscribe("SpawnActionSound", function(location, sound_asset)
 	Sound(location, sound_asset, false, true, SoundType.SFX, 1, 1, 400, 10000, AttenuationFunction.LogReverse)
 end)
 
 -- When local Picks Up a Power Up, forces it to update the health and ammo
-Events:Subscribe("PickedUpPowerUp", function()
+Events.Subscribe("PickedUpPowerUp", function()
 	Sound(Vector(), "NanosWorld::A_VR_Open", true, true, SoundType.SFX, 1, 1)
 
-	local character = NanosWorld:GetLocalPlayer():GetControlledCharacter()
+	local character = NanosWorld.GetLocalPlayer():GetControlledCharacter()
 	if (character) then
 		UpdateHealth(character:GetHealth())
 
 		local weapon = character:GetPicked()
-		if (weapon and NanosWorld:IsA(weapon, Weapon)) then
+		if (weapon and NanosWorld.IsA(weapon, Weapon)) then
 			UpdateAmmo(true, weapon:GetAmmoClip(), weapon:GetAmmoBag())
 		end
 	end
