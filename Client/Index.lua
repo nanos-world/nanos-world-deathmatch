@@ -19,7 +19,7 @@ Client.Subscribe("KeyUp", function(key_name)
 	if (key_name == "Tab") then
 		if (Deathmatch.match_state == MATCH_STATES.POST_TIME) then return end
 
-		MainHUD.CallEvent("ToggleScoreboard", false)
+		MainHUD:CallEvent("ToggleScoreboard", false)
 		ScoreboardToggled = false
 	end
 end)
@@ -29,7 +29,7 @@ Client.Subscribe("KeyDown", function(key_name)
 	if (key_name == "Tab") then
 		if (Deathmatch.match_state == MATCH_STATES.POST_TIME) then return end
 
-		MainHUD.CallEvent("ToggleScoreboard", true)
+		MainHUD:CallEvent("ToggleScoreboard", true)
 		ScoreboardToggled = true
 		UpdateAllPlayersScoreboard()
 	end
@@ -37,7 +37,7 @@ end)
 
 -- Updates someone scoreboard data
 function UpdatePlayerScoreboard(player)
-	MainHUD.CallEvent("UpdatePlayer", player:GetID(), true, player:GetName(), player:GetValue("Score") or 0, player:GetValue("Kills") or 0, player:GetValue("Deaths") or 0, player:GetPing())
+	MainHUD:CallEvent("UpdatePlayer", player:GetID(), true, player:GetName(), player:GetValue("Score") or 0, player:GetValue("Kills") or 0, player:GetValue("Deaths") or 0, player:GetPing())
 end
 
 --  Adds someone to the scoreboard
@@ -139,22 +139,22 @@ end
 
 -- Function to update the Ammo's UI
 function UpdateAmmo(enable_ui, ammo, ammo_bag)
-	MainHUD.CallEvent("UpdateWeaponAmmo", enable_ui, ammo, ammo_bag)
+	MainHUD:CallEvent("UpdateWeaponAmmo", enable_ui, ammo, ammo_bag)
 end
 
 -- Function to update the Health's UI
 function UpdateHealth(health)
-	MainHUD.CallEvent("UpdateHealth", health)
+	MainHUD:CallEvent("UpdateHealth", health)
 end
 
 -- VOIP UI
 Player.Subscribe("VOIP", function(player, is_talking)
-	MainHUD.CallEvent("ToggleVoice", player:GetName(), is_talking)
+	MainHUD:CallEvent("ToggleVoice", player:GetName(), is_talking)
 end)
 
 Player.Subscribe("Destroy", function(player)
-	MainHUD.CallEvent("ToggleVoice", player:GetName(), false)
-	MainHUD.CallEvent("UpdatePlayer", player:GetID(), false)
+	MainHUD:CallEvent("ToggleVoice", player:GetName(), false)
+	MainHUD:CallEvent("UpdatePlayer", player:GetID(), false)
 end)
 
 -- Receives from server the current match_state and remaining_time
@@ -165,11 +165,11 @@ Events.Subscribe("UpdateMatchState", function(data)
 	local label = ""
 
 	if (Deathmatch.match_state == MATCH_STATES.WARM_UP) then
-		MainHUD.CallEvent("ToggleScoreboard", false)
+		MainHUD:CallEvent("ToggleScoreboard", false)
 		label = "WARM UP "
 
 	elseif (Deathmatch.match_state == MATCH_STATES.PREPARING) then
-		MainHUD.CallEvent("ToggleScoreboard", false)
+		MainHUD:CallEvent("ToggleScoreboard", false)
 		label = "STARTING IN "
 
 	elseif (Deathmatch.match_state == MATCH_STATES.IN_PROGRESS) then
@@ -177,14 +177,14 @@ Events.Subscribe("UpdateMatchState", function(data)
 
 	elseif (Deathmatch.match_state == MATCH_STATES.POST_TIME) then
 		-- Forces the Scoreboard to appear
-		MainHUD.CallEvent("ToggleScoreboard", true)
+		MainHUD:CallEvent("ToggleScoreboard", true)
 		UpdateAllPlayersScoreboard()
 		label = "POST TIME "
 
 	end
 
 	-- Calls UI to display the current match status and current remaining_time
-	MainHUD.CallEvent("UpdateMatchStatus", label, Deathmatch.remaining_time)
+	MainHUD:CallEvent("UpdateMatchStatus", label, Deathmatch.remaining_time)
 end)
 
 -- Helpers for spawning sounds
