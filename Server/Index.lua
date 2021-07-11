@@ -70,7 +70,7 @@ DeathmatchSettings = {
 	preparing_time = 13,
 	match_time = 300,
 	post_time = 15,
-	multikill_time = 4,
+	multikill_time = 6,
 	multikill_time_multiplier = 1,
 	spawn_locations = {
 		Vector(-100, -100, 100)
@@ -87,22 +87,22 @@ Deathmatch = {
 
 -- Helper for getting the correct announcer and label from kill count multi kill
 function GetMultiKillLabel(kill_count)
-	if (kill_count == 2) then return "DOUBLE KILL", "UnrealTournamentAnnouncer::A_DoubleKill", 25 end
-	if (kill_count == 3) then return "TRIPLE KILL", "UnrealTournamentAnnouncer::A_TripleKill", 50 end
-	if (kill_count == 4) then return "MULTI KILL", "UnrealTournamentAnnouncer::A_MultiKill", 100 end
-	if (kill_count == 5) then return "MEGA KILL!", "UnrealTournamentAnnouncer::A_MegaKill", 200 end
-	if (kill_count == 6) then return "ULTRA KILL!!", "UnrealTournamentAnnouncer::A_UltraKill", 300 end
+	if (kill_count == 2) then return "DOUBLE KILL", "unreal-tournament-announcer::A_DoubleKill", 25 end
+	if (kill_count == 3) then return "TRIPLE KILL", "unreal-tournament-announcer::A_TripleKill", 50 end
+	if (kill_count == 4) then return "MULTI KILL", "unreal-tournament-announcer::A_MultiKill", 100 end
+	if (kill_count == 5) then return "MEGA KILL!", "unreal-tournament-announcer::A_MegaKill", 200 end
+	if (kill_count == 6) then return "ULTRA KILL!!", "unreal-tournament-announcer::A_UltraKill", 300 end
 
-	return "MONSTER KILL!!!", "UnrealTournamentAnnouncer::A_MonsterKill", 500
+	return "MONSTER KILL!!!", "unreal-tournament-announcer::A_MonsterKill", 500
 end
 
 -- Helper for getting the correct announcer and label from kill count kill streak
 function GetKillStreakLabel(kill_count)
-	if (kill_count == 5) then return "KILLING SPREE", "UnrealTournamentAnnouncer::A_KillingSpree", 100 end
-	if (kill_count == 10) then return "RAMPAGE!", "UnrealTournamentAnnouncer::A_Rampage", 200 end
-	if (kill_count == 15) then return "DOMINATING!!", "UnrealTournamentAnnouncer::A_Dominating", 300 end
-	if (kill_count == 20) then return "UNSTOPPABLE!!!", "UnrealTournamentAnnouncer::A_Unstoppable", 400 end
-	if (kill_count >= 25) then return "GODLIKE!!!!!", "UnrealTournamentAnnouncer::A_Godlike", 500 end
+	if (kill_count == 5) then return "KILLING SPREE", "unreal-tournament-announcer::A_KillingSpree", 100 end
+	if (kill_count == 10) then return "RAMPAGE!", "unreal-tournament-announcer::A_Rampage", 200 end
+	if (kill_count == 15) then return "DOMINATING!!", "unreal-tournament-announcer::A_Dominating", 300 end
+	if (kill_count == 20) then return "UNSTOPPABLE!!!", "unreal-tournament-announcer::A_Unstoppable", 400 end
+	if (kill_count >= 25) then return "GODLIKE!!!!!", "unreal-tournament-announcer::A_Godlike", 500 end
 
 	return nil
 end
@@ -137,7 +137,7 @@ function AddKill(player, location)
 	-- Checks for First Blood
 	if (not Deathmatch.first_blood) then
 		Deathmatch.first_blood = true
-		SpawnActionSound(location, "UnrealTournamentAnnouncer::A_FirstBlood")
+		SpawnActionSound(location, "unreal-tournament-announcer::A_FirstBlood")
 	end
 
 	-- Checks for Kill Streak
@@ -245,8 +245,8 @@ Character.Subscribe("Death", function(character, last_damage_taken, last_bone_da
 				-- If headshot, adds score and spawns an announcer sound for both killed and killer
 				AddScore(instigator, 20, "headshot", "HEADSHOT")
 
-				SpawnActionSound(killer_location, "UnrealTournamentAnnouncer::A_Headshot", instigator)
-				SpawnActionSound(killer_location, "UnrealTournamentAnnouncer::A_Headshot", dead_player)
+				SpawnActionSound(killer_location, "unreal-tournament-announcer::A_Headshot", instigator)
+				SpawnActionSound(killer_location, "unreal-tournament-announcer::A_Headshot", dead_player)
 			end
 
 			-- Adds score for killing
@@ -302,7 +302,7 @@ function UpdateMatchState(new_state)
 	elseif (new_state == MATCH_STATES.PREPARING) then
 		Deathmatch.remaining_time = DeathmatchSettings.preparing_time
 
-		Events.BroadcastRemote("SpawnSound", Vector(), "UnrealTournamentAnnouncer::A_Prepare", true, 1, 1)
+		Events.BroadcastRemote("SpawnSound", Vector(), "unreal-tournament-announcer::A_Prepare", true, 1, 1)
 
 		Package.Log("[Deathmatch] Preparing!")
 		Server.BroadcastChatMessage("<grey>Preparing!</>")
@@ -310,7 +310,7 @@ function UpdateMatchState(new_state)
 		CleanUp()
 
 		-- Freeze all characters
-		for k, character in pairs(NanosWorld:GetCharacters()) do
+		for k, character in pairs(Client.GetAll()) do
 			character:SetMovementEnabled(false)
 			character:SetFlyingMode(true)
 		end
@@ -319,13 +319,13 @@ function UpdateMatchState(new_state)
 		Deathmatch.remaining_time = DeathmatchSettings.match_time
 		Deathmatch.first_blood = false
 
-		Events.BroadcastRemote("SpawnSound", Vector(), "UnrealTournamentAnnouncer::A_Proceed", true, 1, 1)
+		Events.BroadcastRemote("SpawnSound", Vector(), "unreal-tournament-announcer::A_Proceed", true, 1, 1)
 
 		Package.Log("[Deathmatch] Round started!")
 		Server.BroadcastChatMessage("<grey>Round Started!</>")
 
 		-- Unfreeze all characters
-		for k, character in pairs(NanosWorld:GetCharacters()) do
+		for k, character in pairs(Client.GetAll()) do
 			character:SetMovementEnabled(true)
 			character:SetFlyingMode(false)
 		end
@@ -334,7 +334,7 @@ function UpdateMatchState(new_state)
 		Deathmatch.remaining_time = DeathmatchSettings.post_time
 
 		-- Freeze all characters
-		for k, character in pairs(NanosWorld:GetCharacters()) do
+		for k, character in pairs(Client.GetAll()) do
 			character:SetMovementEnabled(false)
 			character:SetFlyingMode(true)
 		end
@@ -345,7 +345,7 @@ function UpdateMatchState(new_state)
 
 		local player_rank = {}
 
-		for k, player in pairs(NanosWorld:GetPlayers()) do
+		for k, player in pairs(Player.GetAll()) do
 			table.insert(player_rank, player)
 		end
 
@@ -354,9 +354,9 @@ function UpdateMatchState(new_state)
 		for rank, player in pairs(player_rank) do
 			-- Plays announcer sound if winner or last place
 			if (rank == 1) then
-				Events.CallRemote("SpawnSound", player, Vector(), "UnrealTournamentAnnouncer::A_Winner", true, 1, 1)
+				Events.CallRemote("SpawnSound", player, Vector(), "unreal-tournament-announcer::A_Winner", true, 1, 1)
 			elseif (rank == #player_rank) then
-				Events.CallRemote("SpawnSound", player, Vector(), "UnrealTournamentAnnouncer::A_LastPlace", true, 1, 1)
+				Events.CallRemote("SpawnSound", player, Vector(), "unreal-tournament-announcer::A_LastPlace", true, 1, 1)
 			end
 
 			Server.BroadcastChatMessage(tostring(rank) .. "# <cyan>" .. player:GetName() .. "</>: " .. tostring(player:GetValue("Score") or 0))
@@ -405,7 +405,7 @@ end)
 
 -- Helper for cleaning up deathmatch data from player
 function CleanUp()
-	for k, player in pairs(NanosWorld:GetPlayers()) do
+	for k, player in pairs(Player.GetAll()) do
 		RespawnPlayer(player)
 
 		player:SetValue("Kills", 0, true)
@@ -470,7 +470,7 @@ end
 -- Helper for spawning weapons
 function SpawnWeapon()
 	-- Custom spawn for Quaternius weapons
-	if (DeathmatchSettings.weapons_to_use == "Quaternius") then
+	if (DeathmatchSettings.weapons_to_use == "quaternius") then
 		local weapon_name = QuaterniusWeapons[math.random(#QuaterniusWeapons)]
 		local weapon = Package.Call("quaternius-tools", weapon_name, {}, false)
 
@@ -504,7 +504,7 @@ function SpawnPowerUp(location)
 
 	-- If a character overlaps it, he gets the power up
 	trigger:Subscribe("BeginOverlap", function(self, object)
-		if (NanosWorld:IsA(object, Character) and object:GetHealth() > 0) then
+		if (NanosUtils.IsA(object, Character) and object:GetHealth() > 0) then
 			self:GetValue("Prop_01"):Destroy()
 			self:GetValue("Prop_02"):Destroy()
 
@@ -513,7 +513,7 @@ function SpawnPowerUp(location)
 
 			-- Gives Ammo
 			local weapon = object:GetPicked()
-			if (weapon and NanosWorld:IsA(weapon, Weapon)) then
+			if (weapon and NanosUtils.IsA(weapon, Weapon)) then
 				weapon:SetAmmoBag(math.min(weapon:GetAmmoBag() + 50, 100))
 			end
 
@@ -553,24 +553,24 @@ end
 
 -- Helper for announcing the current match time
 function AnnounceCountdown()
-	if (Deathmatch.remaining_time == 300) then Events.BroadcastRemote("SpawnSound", Vector(), "UnrealTournamentAnnouncer::A_Countdown_05_Minutes", true, 1, 1) return end
-	if (Deathmatch.remaining_time == 180) then Events.BroadcastRemote("SpawnSound", Vector(), "UnrealTournamentAnnouncer::A_Countdown_03_Minutes", true, 1, 1) return end
-	if (Deathmatch.remaining_time == 60) then Events.BroadcastRemote("SpawnSound", Vector(), "UnrealTournamentAnnouncer::A_Countdown_01_Minute", true, 1, 1) return end
-	if (Deathmatch.remaining_time == 30) then Events.BroadcastRemote("SpawnSound", Vector(), "UnrealTournamentAnnouncer::A_Countdown_30_Seconds", true, 1, 1) return end
-	if (Deathmatch.remaining_time == 10) then Events.BroadcastRemote("SpawnSound", Vector(), "UnrealTournamentAnnouncer::A_Countdown_10", true, 1, 1) return end
-	if (Deathmatch.remaining_time == 9) then Events.BroadcastRemote("SpawnSound", Vector(), "UnrealTournamentAnnouncer::A_Countdown_09", true, 1, 1) return end
-	if (Deathmatch.remaining_time == 8) then Events.BroadcastRemote("SpawnSound", Vector(), "UnrealTournamentAnnouncer::A_Countdown_08", true, 1, 1) return end
-	if (Deathmatch.remaining_time == 7) then Events.BroadcastRemote("SpawnSound", Vector(), "UnrealTournamentAnnouncer::A_Countdown_07", true, 1, 1) return end
-	if (Deathmatch.remaining_time == 6) then Events.BroadcastRemote("SpawnSound", Vector(), "UnrealTournamentAnnouncer::A_Countdown_06", true, 1, 1) return end
-	if (Deathmatch.remaining_time == 5) then Events.BroadcastRemote("SpawnSound", Vector(), "UnrealTournamentAnnouncer::A_Countdown_05", true, 1, 1) return end
-	if (Deathmatch.remaining_time == 4) then Events.BroadcastRemote("SpawnSound", Vector(), "UnrealTournamentAnnouncer::A_Countdown_04", true, 1, 1) return end
-	if (Deathmatch.remaining_time == 3) then Events.BroadcastRemote("SpawnSound", Vector(), "UnrealTournamentAnnouncer::A_Countdown_03", true, 1, 1) return end
-	if (Deathmatch.remaining_time == 2) then Events.BroadcastRemote("SpawnSound", Vector(), "UnrealTournamentAnnouncer::A_Countdown_02", true, 1, 1) return end
-	if (Deathmatch.remaining_time == 1) then Events.BroadcastRemote("SpawnSound", Vector(), "UnrealTournamentAnnouncer::A_Countdown_01", true, 1, 1) return end
+	if (Deathmatch.remaining_time == 300) then Events.BroadcastRemote("SpawnSound", Vector(), "unreal-tournament-announcer::A_Countdown_05_Minutes", true, 1, 1) return end
+	if (Deathmatch.remaining_time == 180) then Events.BroadcastRemote("SpawnSound", Vector(), "unreal-tournament-announcer::A_Countdown_03_Minutes", true, 1, 1) return end
+	if (Deathmatch.remaining_time == 60) then Events.BroadcastRemote("SpawnSound", Vector(), "unreal-tournament-announcer::A_Countdown_01_Minute", true, 1, 1) return end
+	if (Deathmatch.remaining_time == 30) then Events.BroadcastRemote("SpawnSound", Vector(), "unreal-tournament-announcer::A_Countdown_30_Seconds", true, 1, 1) return end
+	if (Deathmatch.remaining_time == 10) then Events.BroadcastRemote("SpawnSound", Vector(), "unreal-tournament-announcer::A_Countdown_10", true, 1, 1) return end
+	if (Deathmatch.remaining_time == 9) then Events.BroadcastRemote("SpawnSound", Vector(), "unreal-tournament-announcer::A_Countdown_09", true, 1, 1) return end
+	if (Deathmatch.remaining_time == 8) then Events.BroadcastRemote("SpawnSound", Vector(), "unreal-tournament-announcer::A_Countdown_08", true, 1, 1) return end
+	if (Deathmatch.remaining_time == 7) then Events.BroadcastRemote("SpawnSound", Vector(), "unreal-tournament-announcer::A_Countdown_07", true, 1, 1) return end
+	if (Deathmatch.remaining_time == 6) then Events.BroadcastRemote("SpawnSound", Vector(), "unreal-tournament-announcer::A_Countdown_06", true, 1, 1) return end
+	if (Deathmatch.remaining_time == 5) then Events.BroadcastRemote("SpawnSound", Vector(), "unreal-tournament-announcer::A_Countdown_05", true, 1, 1) return end
+	if (Deathmatch.remaining_time == 4) then Events.BroadcastRemote("SpawnSound", Vector(), "unreal-tournament-announcer::A_Countdown_04", true, 1, 1) return end
+	if (Deathmatch.remaining_time == 3) then Events.BroadcastRemote("SpawnSound", Vector(), "unreal-tournament-announcer::A_Countdown_03", true, 1, 1) return end
+	if (Deathmatch.remaining_time == 2) then Events.BroadcastRemote("SpawnSound", Vector(), "unreal-tournament-announcer::A_Countdown_02", true, 1, 1) return end
+	if (Deathmatch.remaining_time == 1) then Events.BroadcastRemote("SpawnSound", Vector(), "unreal-tournament-announcer::A_Countdown_01", true, 1, 1) return end
 end
 
 -- Server Tick to check remaining times
-Timer.SetTimeout(function()
+Timer.SetInterval(function()
 	if (Deathmatch.match_state == MATCH_STATES.WARM_UP) then
 		if (DecreaseRemainingTime()) then
 			UpdateMatchState(MATCH_STATES.PREPARING)

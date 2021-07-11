@@ -57,7 +57,7 @@ Timer.SetInterval(function()
 end, 1000)
 
 -- When LocalPlayer spawns, sets an event on it to trigger when we possesses a new character, to store the local controlled character locally. This event is only called once, see Package.Subscribe("Load") to load it when reloading a package
-NanosWorld.Subscribe("SpawnLocalPlayer", function(local_player)
+Client.Subscribe("SpawnLocalPlayer", function(local_player)
 	local_player:Subscribe("Possess", function(player, character)
 		UpdateLocalCharacter(character)
 	end)
@@ -69,9 +69,9 @@ Package.Subscribe("Load", function()
 		Events.CallRemote("PlayerReady")
 	end, 200)
 
-	if (NanosWorld.GetLocalPlayer() ~= nil) then
-		UpdateLocalCharacter(NanosWorld.GetLocalPlayer():GetControlledCharacter())
-		NanosWorld.GetLocalPlayer():Subscribe("Possess", function(player, character)
+	if (Client.GetLocalPlayer() ~= nil) then
+		UpdateLocalCharacter(Client.GetLocalPlayer():GetControlledCharacter())
+		Client.GetLocalPlayer():Subscribe("Possess", function(player, character)
 			UpdateLocalCharacter(character)
 		end)
 	end
@@ -189,6 +189,7 @@ end)
 
 -- Helpers for spawning sounds
 Events.Subscribe("SpawnSound", function(location, sound_asset, is_2D, volume, pitch)
+	Package.Log("test")
 	Sound(location, sound_asset, is_2D, true, SoundType.SFX, volume, pitch)
 end)
 
@@ -200,12 +201,12 @@ end)
 Events.Subscribe("PickedUpPowerUp", function()
 	Sound(Vector(), "NanosWorld::A_VR_Open", true, true, SoundType.SFX, 1, 1)
 
-	local character = NanosWorld.GetLocalPlayer():GetControlledCharacter()
+	local character = Client.GetLocalPlayer():GetControlledCharacter()
 	if (character) then
 		UpdateHealth(character:GetHealth())
 
 		local weapon = character:GetPicked()
-		if (weapon and NanosWorld.IsA(weapon, Weapon)) then
+		if (weapon and NanosUtils.IsA(weapon, Weapon)) then
 			UpdateAmmo(true, weapon:GetAmmoClip(), weapon:GetAmmoBag())
 		end
 	end
