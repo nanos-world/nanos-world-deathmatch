@@ -440,9 +440,9 @@ function RespawnPlayer(player)
 		character:SetInitialLocation(spawn_location)
 		character:Respawn()
 	else
-		-- character = Character(spawn_location.location, spawn_location.rotation, "NanosWorld::SK_Mannequin")
+		-- character = Character(spawn_location.location, spawn_location.rotation, "nanos-world::SK_Mannequin")
 		-- Spawns a new character
-		character = Character(spawn_location, Rotator(), "NanosWorld::SK_Mannequin")
+		character = Character(spawn_location, Rotator(), "nanos-world::SK_Mannequin")
 		player:Possess(character)
 	end
 
@@ -489,11 +489,11 @@ function SpawnPowerUp(location)
 	local new_location = location + Vector(0, 0, 30)
 
 	-- Spawns 2 props for making a cross
-	local powerup_01 = Prop(new_location, Rotator(), "NanosWorld::SM_Cube", CollisionType.NoCollision, false, false)
+	local powerup_01 = Prop(new_location, Rotator(), "nanos-world::SM_Cube", CollisionType.NoCollision, false, false)
 	powerup_01:SetScale(Vector(0.75, 0.25, 0.25))
 	powerup_01:SetMaterialColorParameter("Emissive", Color.GREEN * 100)
 
-	local powerup_02 = Prop(new_location, Rotator(), "NanosWorld::SM_Cube", CollisionType.NoCollision, false, false)
+	local powerup_02 = Prop(new_location, Rotator(), "nanos-world::SM_Cube", CollisionType.NoCollision, false, false)
 	powerup_02:SetScale(Vector(0.25, 0.25, 0.75))
 	powerup_02:SetMaterialColorParameter("Emissive", Color.GREEN * 100)
 

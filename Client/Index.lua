@@ -199,7 +199,7 @@ end)
 
 -- When local Picks Up a Power Up, forces it to update the health and ammo
 Events.Subscribe("PickedUpPowerUp", function()
-	Sound(Vector(), "NanosWorld::A_VR_Open", true, true, SoundType.SFX, 1, 1)
+	Sound(Vector(), "nanos-world::A_VR_Open", true, true, SoundType.SFX, 1, 1)
 
 	local character = Client.GetLocalPlayer():GetControlledCharacter()
 	if (character) then
