@@ -1,8 +1,19 @@
-Package.RequirePackage("NanosWorldWeapons")
+Package.RequirePackage("nanos-world-weapons")
 
 -- List of the Default Weapons
 DefaultWeapons = {
 	NanosWorldWeapons.AK47,
+	NanosWorldWeapons.AK5C,
+	NanosWorldWeapons.GE3,
+	NanosWorldWeapons.P90,
+	NanosWorldWeapons.UMP45,
+	NanosWorldWeapons.Makarov,
+	NanosWorldWeapons.M1911,
+	NanosWorldWeapons.SA80,
+	NanosWorldWeapons.Ithaca37,
+	NanosWorldWeapons.Rem870,
+	NanosWorldWeapons.SPAS12,
+	NanosWorldWeapons.AWP,
 	NanosWorldWeapons.AK74U,
 	NanosWorldWeapons.GE36,
 	NanosWorldWeapons.Glock,
@@ -64,6 +75,144 @@ QuaterniusWeapons = {
 	"SpawnSniperRifle_05",
 }
 
+-- List of textures patterns for default weapons
+PatternList = {
+	"T_80s_Pattern.jpg",
+	"T_Chochip_Pattern.jpg",
+	"T_Cracks_Pattern.jpg",
+	"T_Desert_Marpat_Pattern.jpg",
+	"T_Hexagon_Glow_Pattern.jpg",
+	"T_Hexagon_Pattern.jpg",
+	"T_Ink_Pattern.jpg",
+	"T_LeafSpray_Pattern.jpg",
+	"T_Net01_Pattern.jpg",
+	"T_Stripes_Pattern.jpg",
+	"T_Urban_Marpat_Pattern.jpg",
+	"T_W90_Pattern.jpg",
+	"T_W90K_Pattern.jpg",
+	"T_Wood_Marpat_Pattern.jpg",
+	"T_Murica_Pattern.jpg",
+	"T_Watermelon_Pattern.jpg",
+	"T_Infernoo.jpg",
+	"T_Pattern_001.jpg",
+	"T_Pattern_002.jpg",
+	"T_Pattern_003.jpg",
+	"T_Pattern_004.jpg",
+	"T_Pattern_005.jpg",
+	"T_Pattern_006.jpg",
+	"T_Pattern_007.jpg",
+	"T_Pattern_008.jpg",
+	"T_Pattern_009.jpg",
+	"T_Pattern_010.jpg",
+	"T_Pattern_011.jpg",
+	"T_Pattern_012.jpg",
+	"T_Pattern_013.jpg",
+	"T_Pattern_014.jpg",
+	"T_Pattern_015.jpg",
+	"T_Pattern_016.jpg",
+	"T_Pattern_017.jpg",
+	"T_Pattern_018.jpg",
+	"T_Pattern_019.jpg",
+	"T_Pattern_020.jpg",
+	"T_Pattern_021.jpg",
+	"T_Pattern_022.jpg",
+	"T_Pattern_023.jpg",
+	"T_Pattern_024.jpg",
+	"T_Pattern_025.jpg",
+	"T_Pattern_026.jpg",
+	"T_Pattern_027.jpg",
+	"T_Pattern_028.jpg",
+	"T_Pattern_029.jpg",
+	"T_Pattern_030.jpg",
+	"T_Pattern_031.jpg",
+	"T_Pattern_032.jpg",
+	"T_Pattern_033.jpg",
+	"T_Pattern_034.jpg",
+	"T_Pattern_035.jpg",
+	"T_Pattern_036.jpg",
+	"T_Pattern_037.jpg",
+	"T_Pattern_038.jpg",
+	"T_Pattern_039.jpg",
+	"T_Pattern_040.jpg",
+	"T_Pattern_041.jpg",
+	"T_Pattern_042.jpg",
+	"T_Pattern_043.jpg",
+	"T_Pattern_044.jpg",
+	"T_Pattern_045.jpg",
+	"T_Pattern_046.jpg",
+	"T_Pattern_047.jpg",
+	"T_Pattern_048.jpg",
+	"T_Pattern_049.jpg",
+	"T_Pattern_050.jpg",
+	"T_Pattern_051.jpg",
+	"T_Pattern_052.jpg",
+	"T_Pattern_053.jpg",
+	"T_Pattern_054.jpg",
+	"T_Pattern_055.jpg",
+	"T_Pattern_056.jpg",
+	"T_Pattern_057.jpg",
+	"T_Pattern_058.jpg",
+	"T_Pattern_059.jpg",
+	"T_Pattern_060.jpg",
+	"T_Pattern_061.jpg",
+	"T_Pattern_062.jpg",
+	"T_Pattern_063.jpg",
+	"T_Pattern_064.jpg",
+	"T_Pattern_065.jpg",
+	"T_Pattern_066.jpg",
+	"T_Pattern_067.jpg",
+	"T_Pattern_068.jpg",
+	"T_Pattern_069.jpg",
+	"T_Pattern_070.jpg",
+	"T_Pattern_071.jpg",
+	"T_Pattern_072.jpg",
+	"T_Pattern_073.jpg",
+	"T_Pattern_074.jpg",
+	"T_Pattern_075.jpg",
+	"T_Pattern_076.jpg",
+	"T_Pattern_077.jpg",
+	"T_Pattern_078.jpg",
+	"T_Pattern_079.jpg",
+	"T_Pattern_080.jpg",
+	"T_Pattern_081.jpg",
+	"T_Pattern_082.jpg",
+	"T_Pattern_083.jpg",
+	"T_Pattern_084.jpg",
+	"T_Pattern_085.jpg",
+	"T_Pattern_086.jpg",
+	"T_Pattern_087.jpg",
+	"T_Pattern_088.jpg",
+	"T_Pattern_089.jpg",
+	"T_Pattern_090.jpg",
+	"T_Pattern_091.jpg",
+	"T_Pattern_092.jpg",
+	"T_Pattern_093.jpg",
+	"T_Pattern_094.jpg",
+	"T_Pattern_095.jpg",
+	"T_Pattern_096.jpg",
+	"T_Pattern_097.jpg",
+	"T_Pattern_098.jpg",
+	"T_Pattern_099.jpg",
+	"T_Pattern_100.jpg",
+	"T_Pattern_101.jpg",
+	"T_Pattern_102.jpg",
+	"T_Pattern_103.jpg",
+	"T_Pattern_104.jpg",
+	"T_Pattern_105.jpg",
+	"T_Pattern_106.jpg",
+	"T_Pattern_107.jpg",
+	"T_Pattern_108.jpg",
+	"T_Pattern_109.jpg",
+	"T_Pattern_110.jpg",
+	"T_Pattern_111.jpg",
+	"T_Pattern_112.jpg",
+	"T_Pattern_113.jpg",
+	"T_Pattern_114.jpg",
+	"T_Pattern_115.jpg",
+	"T_Pattern_116.jpg",
+	"T_Pattern_117.jpg"
+}
+
 -- Deathmatch Settings
 DeathmatchSettings = {
 	warmup_time = 30,
@@ -75,7 +224,7 @@ DeathmatchSettings = {
 	spawn_locations = {
 		Vector(-100, -100, 100)
 	},
-	weapons_to_use = "Default" -- "Default"
+	weapons_to_use = "default" -- "quaternius"
 }
 
 -- Deathmatch Data
@@ -213,20 +362,17 @@ function AddScore(player, score, id, label, use_current_label, silence)
 end
 
 -- Adds score when damaging
-Character.Subscribe("TakeDamage", function(character, damage, bone, type, from, instigator)
+Character.Subscribe("TakeDamage", function(character, damage, bone, type, from, instigator, causer)
 	-- If it's suicide, ignore it
 	if (not instigator or instigator == character:GetPlayer()) then
 		return
 	end
 
-	local old_health = character:GetHealth()
-	local real_damage = damage
+	-- Clamps the damage to Health
+	local health = character:GetHealth()
+	local true_damage = health < damage and health or damage
 
-	if (old_health - damage < 0) then
-		real_damage = old_health
-	end
-
-	AddScore(instigator, real_damage, "enemy_hit", "ENEMY HIT", true)
+	AddScore(instigator, true_damage, "enemy_hit", "ENEMY HIT", true)
 end)
 
 -- When a character dies, check if I was the last one to do damage on him and displays on the screen as a kill
@@ -272,11 +418,14 @@ Character.Subscribe("Death", function(character, last_damage_taken, last_bone_da
 		end
 
 		-- Respawns after 5 seconds
-		Timer.SetTimeout(function(_player)
-			if (Deathmatch.match_state ~= MATCH_STATES.POST_TIME) then
-				RespawnPlayer(_player)
-			end
-		end, 5000, dead_player)
+		Timer.Bind(
+			Timer.SetTimeout(function(_player)
+				if (Deathmatch.match_state ~= MATCH_STATES.POST_TIME) then
+					RespawnPlayer(_player)
+				end
+			end, 5000, dead_player),
+			dead_player
+		)
 	end
 end)
 
@@ -310,7 +459,7 @@ function UpdateMatchState(new_state)
 		CleanUp()
 
 		-- Freeze all characters
-		for k, character in pairs(Client.GetAll()) do
+		for k, character in pairs(Character.GetAll()) do
 			character:SetMovementEnabled(false)
 			character:SetFlyingMode(true)
 		end
@@ -325,7 +474,7 @@ function UpdateMatchState(new_state)
 		Server.BroadcastChatMessage("<grey>Round Started!</>")
 
 		-- Unfreeze all characters
-		for k, character in pairs(Client.GetAll()) do
+		for k, character in pairs(Character.GetAll()) do
 			character:SetMovementEnabled(true)
 			character:SetFlyingMode(false)
 		end
@@ -334,7 +483,7 @@ function UpdateMatchState(new_state)
 		Deathmatch.remaining_time = DeathmatchSettings.post_time
 
 		-- Freeze all characters
-		for k, character in pairs(Client.GetAll()) do
+		for k, character in pairs(Character.GetAll()) do
 			character:SetMovementEnabled(false)
 			character:SetFlyingMode(true)
 		end
@@ -425,6 +574,11 @@ function RespawnPlayer(player)
 	local character = player:GetControlledCharacter()
 
 	local spawn_location = DeathmatchSettings.spawn_locations[math.random(#DeathmatchSettings.spawn_locations)] + Vector(0, 0, 5000)
+	-- local spawn_location = Vector(
+	-- 	math.random(-5000, 5000),
+	-- 	math.random(-5000, 5000),
+	-- 	5000
+	-- )
 
 	-- If player already has a character
 	if (character) then
@@ -457,12 +611,13 @@ function RespawnPlayer(player)
 	character:SetInvulnerable(true)
 	character:SetMaterialColorParameter("Tint", Color.BLUE)
 
-	Timer.SetTimeout(function(_character)
-		if (_character and _character:IsValid()) then
-			character:SetMaterialColorParameter("Tint", Color.WHITE)
+	Timer.Bind(
+		Timer.SetTimeout(function(_character)
+			_character:SetMaterialColorParameter("Tint", Color.WHITE)
 			_character:SetInvulnerable(false)
-		end
-	end, 3000, character)
+		end, 3000, character),
+		character
+	)
 
 	return character
 end
@@ -481,7 +636,17 @@ function SpawnWeapon()
 
 	-- If custom weapons didn't work or the default weapon is NanosWorldDefault weapons, spawns it
 	local weapon_func = DefaultWeapons[math.random(#DefaultWeapons)]
-	return weapon_func()
+	local weapon = weapon_func()
+
+	if (DeathmatchSettings.weapons_to_use == "default") then
+		-- Adds random texture pattern
+		weapon:SetMaterialTextureParameter("PatternTexture", "assets///nanos-world/Textures/Pattern/" .. PatternList[math.random(#PatternList)])
+		weapon:SetMaterialScalarParameter("PatternBlend", 1)
+		weapon:SetMaterialScalarParameter("PatternTiling", 2)
+		weapon:SetMaterialScalarParameter("PatternRoughness", 0.3)
+	end
+
+	return weapon
 end
 
 -- Helper for spawning a Power Up
@@ -499,15 +664,14 @@ function SpawnPowerUp(location)
 
 	-- Spawns a trigger to activate the power up in a character
 	local trigger = Trigger(new_location, Rotator(), Vector(100), TriggerType.Sphere, false)
-	trigger:SetValue("Prop_01", powerup_01)
-	trigger:SetValue("Prop_02", powerup_02)
+
+	-- Attaches the PowerUp props, so they get destroyed immediately when trigger is destroyed
+	powerup_01:AttachTo(trigger, AttachmentRule.SnapToTarget, "", 0)
+	powerup_02:AttachTo(trigger, AttachmentRule.SnapToTarget, "", 0)
 
 	-- If a character overlaps it, he gets the power up
 	trigger:Subscribe("BeginOverlap", function(self, object)
 		if (NanosUtils.IsA(object, Character) and object:GetHealth() > 0) then
-			self:GetValue("Prop_01"):Destroy()
-			self:GetValue("Prop_02"):Destroy()
-
 			-- Gives Health
 			object:SetHealth(math.min(object:GetHealth() + 50, 120))
 
@@ -525,23 +689,15 @@ function SpawnPowerUp(location)
 	end)
 
 	-- Destroys the Power Up after 30 seconds
-	Timer.SetTimeout(function(_trigger)
-		if (_trigger and _trigger:IsValid()) then
-			_trigger:GetValue("Prop_01"):Destroy()
-			_trigger:GetValue("Prop_02"):Destroy()
-			_trigger:Destroy()
-		end
-	end, 30000, trigger)
+	trigger:SetLifeSpan(30)
 end
 
 -- Helper for updating the player's match state
 function UpdatePlayerMatchState(player)
-	local data = { Deathmatch.match_state, Deathmatch.remaining_time }
-
 	if (player) then
-		Events.CallRemote("UpdateMatchState", player, data)
+		Events.CallRemote("UpdateMatchState", player, Deathmatch.match_state, Deathmatch.remaining_time)
 	else
-		Events.BroadcastRemote("UpdateMatchState", data)
+		Events.BroadcastRemote("UpdateMatchState", Deathmatch.match_state, Deathmatch.remaining_time)
 	end
 end
 

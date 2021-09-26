@@ -1,6 +1,6 @@
 
 -- Spawns HUD
-MainHUD = WebUI("Sandbox HUD", "file:///UI/index.html")
+MainHUD = WebUI("Deathmatch HUD", "file:///UI/index.html")
 ScoreboardToggled = false
 
 -- Deathmatch data
@@ -46,7 +46,7 @@ Player.Subscribe("Spawn", function(player)
 end)
 
 function UpdateAllPlayersScoreboard()
-	for k, player in pairs(NanosWorld.GetPlayers()) do
+	for k, player in pairs(Player.GetAll()) do
 		UpdatePlayerScoreboard(player)
 	end
 end
@@ -89,7 +89,7 @@ function UpdateLocalCharacter(character)
 	UpdateHealth(character:GetHealth())
 
 	-- Sets on character an event to update the health's UI after it takes damage
-	character:Subscribe("TakeDamage", function(charac, damage, type, bone, from_direction, instigator)
+	character:Subscribe("TakeDamage", function(charac, damage, type, bone, from_direction, instigator, causer)
 		-- Updates the Health UI
 		UpdateHealth(math.max(charac:GetHealth() - damage, 0))
 	end)
@@ -158,9 +158,9 @@ Player.Subscribe("Destroy", function(player)
 end)
 
 -- Receives from server the current match_state and remaining_time
-Events.Subscribe("UpdateMatchState", function(data)
-	Deathmatch.match_state = data. match_state
-	Deathmatch.remaining_time = data.remaining_time - 1
+Events.Subscribe("UpdateMatchState", function(match_state, remaining_time)
+	Deathmatch.match_state = match_state
+	Deathmatch.remaining_time = remaining_time - 1
 
 	local label = ""
 
@@ -189,7 +189,6 @@ end)
 
 -- Helpers for spawning sounds
 Events.Subscribe("SpawnSound", function(location, sound_asset, is_2D, volume, pitch)
-	Package.Log("test")
 	Sound(location, sound_asset, is_2D, true, SoundType.SFX, volume, pitch)
 end)
 

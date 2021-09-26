@@ -99,34 +99,26 @@ body {
 	position: absolute;
 	right: 30px;
 	bottom: 30px;
-	width: 120px;
 	height: 55px;
 	background-color: #0000003d;
 	text-align: right;
-	line-height: 60px;
+	padding: 0px 10px;
 }
 
 #weapon_ammo_separator {
 	font-weight: bold;
 	font-size: 16px;
-	right: 57px;
-	top: 5px;
-	position: absolute;
 }
 
 #weapon_ammo_bag {
 	font-weight: bold;
 	font-size: 16px;
-	right: 15px;
-	top: 5px;
-	position: absolute;
 }
 
 #weapon_ammo_clip {
 	font-weight: bold;
 	font-size: 32px;
-	position: absolute;
-	right: 67px;
+	line-height: 55px;
 }
 
 #health_container {
