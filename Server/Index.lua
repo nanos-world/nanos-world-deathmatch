@@ -222,7 +222,6 @@ DeathmatchSettings = {
 	multikill_time = 6,
 	multikill_time_multiplier = 1,
 	spawn_locations = {
-		Vector(-100, -100, 100)
 	},
 	weapons_to_use = "default" -- "quaternius"
 }
@@ -498,7 +497,7 @@ function UpdateMatchState(new_state)
 			table.insert(player_rank, player)
 		end
 
-		table.sort(player_rank, function(a, b) return a:GetValue("Score") > b:GetValue("Score") end)
+		table.sort(player_rank, function(a, b) return (a:GetValue("Score") or 0) > (b:GetValue("Score") or 0) end)
 
 		for rank, player in pairs(player_rank) do
 			-- Plays announcer sound if winner or last place
@@ -573,7 +572,7 @@ function RespawnPlayer(player)
 
 	local character = player:GetControlledCharacter()
 
-	local spawn_location = DeathmatchSettings.spawn_locations[math.random(#DeathmatchSettings.spawn_locations)] + Vector(0, 0, 5000)
+	local spawn_location = #DeathmatchSettings.spawn_locations > 0 and (DeathmatchSettings.spawn_locations[math.random(#DeathmatchSettings.spawn_locations)] + Vector(0, 0, math.random(5000, 6000))) or Vector(math.random(-3000, 3000), math.random(-3000, 3000), math.random(5000, 6000))
 	-- local spawn_location = Vector(
 	-- 	math.random(-5000, 5000),
 	-- 	math.random(-5000, 5000),
