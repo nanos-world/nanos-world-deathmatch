@@ -139,12 +139,12 @@ end
 
 -- Function to update the Ammo's UI
 function UpdateAmmo(enable_ui, ammo, ammo_bag)
-	MainHUD:CallEvent("UpdateWeaponAmmo", enable_ui, ammo, ammo_bag)
+	MainHUD:CallEvent("BattleFieldUpdateAmmo", enable_ui, ammo, ammo_bag)
 end
 
 -- Function to update the Health's UI
 function UpdateHealth(health)
-	MainHUD:CallEvent("UpdateHealth", health)
+	MainHUD:CallEvent("BattleFieldUpdateHealth", health)
 end
 
 -- VOIP UI

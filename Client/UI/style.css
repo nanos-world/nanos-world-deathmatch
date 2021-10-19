@@ -94,54 +94,235 @@ body {
 	font-weight: normal;
 }
 
-#weapon_ammo_container {
-	display: none;
-	position: absolute;
-	right: 30px;
-	bottom: 30px;
-	height: 55px;
-	background-color: #0000003d;
-	text-align: right;
-	padding: 0px 10px;
+@font-face {
+    font-family: PuristaLight;
+    src: url(fonts/purista_light.otf);
+}
+
+@font-face {
+    font-family: PuristaMedium;
+    src: url(fonts/purista_medium.otf);
+}
+
+@font-face {
+    font-family: PuristaBold;
+    src: url(fonts/purista_bold.otf);
+}
+
+#weapon_hud_container {
+    display: block;
+    position: absolute;
+    right: 3%;
+    bottom: 6%;
+    height: 15%;
+    width: 22.25%;
+    background-color: rgba(15, 15, 15, 0.0);
+    transform: skewY(2deg);
+    color: rgba(9,255,230,1);
 }
 
 #weapon_ammo_separator {
-	font-weight: bold;
-	font-size: 16px;
+    position: absolute;
+    font-family: PuristaLight;
+    font-weight: bold;
+    font-size: 1.75vw;
+    text-align: right;
+    vertical-align: top;
+    right: 15%;
+    top: 10%;
+    color: rgba(150,255,230,0.85);
 }
 
 #weapon_ammo_bag {
-	font-weight: bold;
-	font-size: 16px;
+    position: absolute;
+    font-family: PuristaMedium;
+    font-weight: bold;
+    font-size: 1.15vw;
+    text-align: right;
+    vertical-align: top;
+    letter-spacing: 2px;
+    right: 0.5%;
+    bottom: 68%;
+    color: rgba(9,255,230,0.95);
+    /*text-shadow: 0px 0px 2px rgba(50,255,227, 0.75);*/
+}
+
+#weapon_ammo_bag_greyed {
+    position: absolute;
+    font-family: PuristaMedium;
+    font-weight: bold;
+    font-size: 1.15vw;
+    text-align: right;
+    vertical-align: top;
+    letter-spacing: 2px;
+    right: 0.5%;
+    bottom: 68%;
+    color: rgba(198, 243, 222, 0.25);
+    text-shadow: 0px 0px 2px rgba(198, 243, 222, 0.35);
 }
 
 #weapon_ammo_clip {
+    position: absolute;
+    font-family: PuristaMedium;
+    font-weight: bold;
+    font-size: 550%;
+    font-size: 3vw;
+    text-align: left;
+    letter-spacing: 6px;
+    bottom: 52%;
+    right: 20%;
+    color: rgba(9,255,230,1);
+    /*text-shadow: 0px 0px 2px rgba(198, 243, 222, 0.75);*/
+}
+
+#weapon_ammo_clip_greyed {
+    position: absolute;
+    font-family: PuristaMedium;
+    font-weight: bold;
+    font-size: 550%;
+    font-size: 3vw;
+    text-align: left;
+    letter-spacing: 6px;
+    bottom: 52%;
+    right: 20%;
+    color: rgba(198, 243, 222, 0.25);
+    text-shadow: 0px 0px 2px rgba(198, 243, 222, 0.35);
+}
+
+#primary_container {
+    position: absolute;
+    width: 27.5%;
+    height: 35%;
+    background-color: rgba(9,255,230,0.90);
+    top: 60%;
+    margin-top: 1%;
+}
+
+#secondary_container {
+    position: absolute;
+    width: 27.5%;
+    height: 35%;
+    background-color: rgba(9,255,230,0.65);
+    top: 60%;
+    left: 28%;
+    margin-top: 1%;
+}
+
+#gadgets_container {
+    position: absolute;
+    width: 14.25%;
+    height: 35%;
+    background-color: rgba(9,255,230,0.65);
+    top: 60%;
+    left: 56%;
+    margin-top: 1%;
+}
+
+#support_container {
+    position: absolute;
+    width: 14.25%;
+    height: 35%;
+    background-color: rgba(9,255,230,0.65);
+    top: 60%;
+    left: 70.75%;
+    margin-top: 1%;
+}
+
+#grenade_container {
+    position: absolute;
+    width: 14.25%;
+    height: 35%;
+    background-color: rgba(9,255,230,0.65);
+    top: 60%;
+    left: 85.50%;
+    margin-top: 1%;
+}
+
+#equipment_logo {
+    position: absolute;
+    width: 10%;
+    height: 20%;
+    top: 67%;
+    left: 7%;
+}
+
+#health_logo {
+    position: absolute;
+    font-family: PuristaBold;
+    font-size: 1.7vw;
+    color: rgb(70, 255, 96);
+    top: 36%;
+    left: 88%;
+}
+
+#health_bar {
+    position: absolute;
+    width: 100%;
+    height: 5%;
+    background-color: rgb(70, 255, 96);
+    top: 57%;
+}
+
+#primary_ammo {
+    position: absolute;
+    font-family: PuristaMedium;
+    font-weight: bold;
+    letter-spacing: 0.1vw;
+    font-size: 0.7vw;
+    text-align: right;
+    vertical-align: top;
+    top: 85%;
+    left: 22%;
+    color: rgb(60, 60, 60)
+}
+
+#health_status {
+    position: absolute;
+    letter-spacing: 0.01vw;
+    font-size: 0.8vw;
+    text-align: right;
+    vertical-align: top;
+    top: 45%;
+    left: 93%;
+    color: rgb(70, 255, 96);
+    font-family: PuristaBold;
+}
+
+
+#armor_container {
+	margin-left: auto;
+    margin-right: auto;
+	width: 100%;
+    height: 3%;
+    background: rgb(9, 13, 230);
+
+    position: absolute;
+	display: flex;
+	top:440%;
+	left: 190%;
+	bottom: 100%;
+	
+  	
+  	
+}
+
+#armor_current {
+	font-size: 25px;
+	color: rgb(4, 8, 224);
 	font-weight: bold;
-	font-size: 32px;
-	line-height: 55px;
-}
+	text-shadow: -1px -1px 0 rgb(5, 20, 219), 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+	height: 400%;
 
-#health_container {
 	position: absolute;
-	bottom: 30px;
-	left: 30px;
-	width: 120px;
-	height: 55px;
-	background-color: #0000003d;
-	line-height: 60px;
+	display: flex;
+  	left: 50%;
+  	bottom: 140%;
+  	margin: 0 auto;
+
 }
 
-#health_container img {
-	height: 50%;
-	margin: 13px;
-}
 
-#health_current {
-	font-size: 27px;
-	position: absolute;
-	text-align: center;
-	font-weight: bold;
-}
+
 
 #match_status {
 	text-align: center;
