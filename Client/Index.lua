@@ -3,14 +3,19 @@
 MainHUD = WebUI("Deathmatch HUD", "file:///UI/index.html")
 ScoreboardToggled = false
 
+-- Spawns a Sun at 9:30 AM
+World.SpawnDefaultSun()
+World.SetTime(9, 30)
+World.SetSunSpeed(0)
+
 -- Deathmatch data
 Deathmatch = {
 	remaining_time = 0
 }
 
--- Calls Battlefield Kill UI to configure it - parameters: enable_autoscore, kill_score, headshot_score
+-- Calls Battlefield Kill UI to configure it - parameters: enable_autodamagescore, kill_score, headshot_score
 Package.Subscribe("Load", function()
-	Events.Call("ConfigureBattlefieldKillUI", false, 20, 25)
+	Events.Call("ConfigureBattlefieldKillUI", false, 20, 20)
 	return false
 end)
 

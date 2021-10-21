@@ -22,7 +22,35 @@ DefaultWeapons = {
 	NanosWorldWeapons.Moss500,
 	NanosWorldWeapons.AP5,
 	NanosWorldWeapons.SMG11,
-	NanosWorldWeapons.ASVal,
+	NanosWorldWeapons.Lewis,
+	NanosWorldWeapons.M1Garand,
+	NanosWorldWeapons.ColtPython,
+}
+
+-- List of Weapons used in GunGame mode
+GunGameWeapons = {
+	-- SMGs
+	[0] = NanosWorldWeapons.P90,
+	[1] = NanosWorldWeapons.UMP45,
+	[2] = NanosWorldWeapons.AP5,
+	-- Rifles
+	[3] = NanosWorldWeapons.AR4,
+	[4] = NanosWorldWeapons.GE36,
+	[5] = NanosWorldWeapons.GE3,
+	[6] = NanosWorldWeapons.AK47,
+	-- Shotguns
+	[7] = NanosWorldWeapons.Rem870,
+	[8] = NanosWorldWeapons.Ithaca37,
+	[9] = NanosWorldWeapons.SPAS12,
+	-- Sniper
+	[10] = NanosWorldWeapons.AWP,
+	-- Machine
+	[11] = NanosWorldWeapons.Lewis,
+	-- Pistols
+	[12] = NanosWorldWeapons.DesertEagle,
+	[13] = NanosWorldWeapons.Makarov,
+	[14] = NanosWorldWeapons.M1911,
+	[15] = NanosWorldWeapons.Glock,
 }
 
 -- List of Quaternius Weapons
@@ -223,7 +251,8 @@ DeathmatchSettings = {
 	multikill_time_multiplier = 1,
 	spawn_locations = {
 	},
-	weapons_to_use = "default" -- "quaternius"
+	weapons_to_use = "default", -- "quaternius"
+	mode = GAME_MODE.DEATHMATCH
 }
 
 -- Deathmatch Data
@@ -296,7 +325,10 @@ function AddKill(player, location)
 
 		if (label) then
 			-- Adds a score for kill streak
-			AddScore(player, score, "killingspree", label)
+			if (DeathmatchSettings.mode == GAME_MODE.DEATHMATCH) then
+				AddScore(player, score, "killingspree", label)
+			end
+
 			SpawnActionSound(location, sound_asset)
 		end
 	end
@@ -314,7 +346,9 @@ function AddKill(player, location)
 		Server.BroadcastChatMessage("<cyan>" .. player:GetName() .. "</> made a <red>" .. label .. "</>")
 
 		-- Adds a score for multi kill
-		AddScore(player, score, "multikill", label)
+		if (DeathmatchSettings.mode == GAME_MODE.DEATHMATCH) then
+			AddScore(player, score, "multikill", label)
+		end
 
 		-- If is on more than Triple Kill, spawns sound for everyone
 		if (multikill_count >= 3) then
@@ -325,6 +359,43 @@ function AddKill(player, location)
 	else
 		-- Resets Multi Kill count
 		player:SetValue("MultiKillCount", 1, true)
+	end
+
+	if (DeathmatchSettings.mode == GAME_MODE.GUNGAME) then
+		if ((player:GetValue("Score") or 0) + 1 == #GunGameWeapons) then
+			UpdateMatchState(MATCH_STATES.POST_TIME)
+			Server:BroadcastChatMessage("<cyan>" .. player:GetName() .. "</> has won!")
+			return
+		end
+
+		-- Updates accumulated kill
+		local accumulated_kills = player:GetValue("AccumulatedKills") or 0
+
+		if (accumulated_kills >= 1) then
+			player:SetValue("AccumulatedKills", 0, true)
+			-- Adds score for killing
+			-- TODO sound
+			AddScore(player, 1, "level_up", "LEVEL UP", false, true)
+
+			-- If has a weapon, destroys it
+			local character = player:GetControlledCharacter()
+			local weapon = player:GetValue("Weapon")
+			local old_aiming = character:GetWeaponAimMode()
+
+			if (weapon and weapon:IsValid()) then
+				weapon:Destroy()
+			end
+
+			local new_weapon = SpawnWeapon(player)
+
+			if (new_weapon) then
+				player:SetValue("Weapon", new_weapon)
+				character:PickUp(new_weapon)
+				character:SetWeaponAimMode(old_aiming)
+			end
+		else
+			player:SetValue("AccumulatedKills", 1, true)
+		end
 	end
 end
 
@@ -339,7 +410,9 @@ function AddDeath(player, instigator)
 
 		if (kill_streak >= 5) then
 			-- Adds score for that
-			AddScore(instigator, 50, "killstreak_ended", "KILLSTREAK ENDED")
+			if (DeathmatchSettings.mode == GAME_MODE.DEATHMATCH) then
+				AddScore(instigator, 50, "killstreak_ended", "KILLSTREAK ENDED")
+			end
 
 			Server.BroadcastChatMessage("<cyan>" .. instigator:GetName() .. "</> ended <cyan>" .. player:GetName() .. "'s</> <red>" .. kill_streak .. "</> streak!")
 		end
@@ -371,7 +444,9 @@ Character.Subscribe("TakeDamage", function(character, damage, bone, type, from, 
 	local health = character:GetHealth()
 	local true_damage = health < damage and health or damage
 
-	AddScore(instigator, true_damage, "enemy_hit", "ENEMY HIT", true)
+	if (DeathmatchSettings.mode == GAME_MODE.DEATHMATCH) then
+		AddScore(instigator, true_damage, "enemy_hit", "ENEMY HIT", true)
+	end
 end)
 
 -- When a character dies, check if I was the last one to do damage on him and displays on the screen as a kill
@@ -388,14 +463,19 @@ Character.Subscribe("Death", function(character, last_damage_taken, last_bone_da
 			local is_headshot = last_bone_damaged == "head" or last_bone_damaged == "neck_01"
 			if (is_headshot) then
 				-- If headshot, adds score and spawns an announcer sound for both killed and killer
-				AddScore(instigator, 20, "headshot", "HEADSHOT")
+				if (DeathmatchSettings.mode == GAME_MODE.DEATHMATCH) then
+					AddScore(instigator, 20, "headshot", "HEADSHOT")
+				end
 
 				SpawnActionSound(killer_location, "unreal-tournament-announcer::A_Headshot", instigator)
 				SpawnActionSound(killer_location, "unreal-tournament-announcer::A_Headshot", dead_player)
 			end
 
 			-- Adds score for killing
-			AddScore(instigator, 20, "enemy_kill", "ENEMY KILL", false, true)
+
+			if (DeathmatchSettings.mode == GAME_MODE.DEATHMATCH) then
+				AddScore(instigator, 20, "enemy_kill", "ENEMY KILL", false, true)
+			end
 
 			-- Adds one more kill to count
 			AddKill(instigator, killer_location)
@@ -554,8 +634,6 @@ end)
 -- Helper for cleaning up deathmatch data from player
 function CleanUp()
 	for k, player in pairs(Player.GetAll()) do
-		RespawnPlayer(player)
-
 		player:SetValue("Kills", 0, true)
 		player:SetValue("LastKillAt", 0, true)
 		player:SetValue("MultiKillCount", 0, true)
@@ -563,6 +641,9 @@ function CleanUp()
 		player:SetValue("Score", 0, true)
 		player:SetValue("KillStreak", 0, true)
 		player:SetValue("Weapon", nil)
+		player:SetValue("AccumulatedKills", 0)
+
+		RespawnPlayer(player)
 	end
 end
 
@@ -590,8 +671,7 @@ function RespawnPlayer(player)
 		end
 
 		-- Respawns the character
-		character:SetInitialLocation(spawn_location)
-		character:Respawn()
+		character:Respawn(spawn_location)
 	else
 		-- character = Character(spawn_location.location, spawn_location.rotation, "nanos-world::SK_Mannequin")
 		-- Spawns a new character
@@ -599,12 +679,18 @@ function RespawnPlayer(player)
 		player:Possess(character)
 	end
 
+	if (Deathmatch.match_state == MATCH_STATES.PREPARING) then
+		character:SetMovementEnabled(false)
+	end
+
 	-- Spawns a new weapon
-	local weapon = SpawnWeapon()
-	weapon:SetAmmoBag(weapon:GetAmmoClip() * 3)
+	local weapon = SpawnWeapon(player)
 
 	player:SetValue("Weapon", weapon)
-	character:PickUp(weapon)
+
+	if (weapon) then
+		character:PickUp(weapon)
+	end
 
 	-- Sets the character invulnerable for 3 seconds
 	character:SetInvulnerable(true)
@@ -622,23 +708,32 @@ function RespawnPlayer(player)
 end
 
 -- Helper for spawning weapons
-function SpawnWeapon()
-	-- Custom spawn for Quaternius weapons
-	if (DeathmatchSettings.weapons_to_use == "quaternius") then
-		local weapon_name = QuaterniusWeapons[math.random(#QuaterniusWeapons)]
-		local weapon = Package.Call("quaternius-tools", weapon_name, {}, false)
+function SpawnWeapon(player)
+	local weapon = nil
 
-		if (weapon) then
-			return weapon
+	if (DeathmatchSettings.mode == GAME_MODE.DEATHMATCH) then
+		-- Custom spawn for Quaternius weapons
+		if (DeathmatchSettings.weapons_to_use == "quaternius") then
+			local weapon_name = QuaterniusWeapons[math.random(#QuaterniusWeapons)]
+			weapon = Package.Call("quaternius-tools", weapon_name, {}, false)
+		-- Default Weapons
+		elseif (DeathmatchSettings.weapons_to_use == "default") then
+			local weapon_func = DefaultWeapons[math.random(#DefaultWeapons)]
+			weapon = weapon_func()
 		end
+	elseif (DeathmatchSettings.mode == GAME_MODE.GUNGAME) then
+		local player_score = player:GetValue("Score") or 0
+
+		-- Golden Knife
+		if (player_score >= #GunGameWeapons) then return nil end
+
+		local weapon_func = GunGameWeapons[player_score]
+		weapon = weapon_func()
 	end
 
-	-- If custom weapons didn't work or the default weapon is NanosWorldDefault weapons, spawns it
-	local weapon_func = DefaultWeapons[math.random(#DefaultWeapons)]
-	local weapon = weapon_func()
+	weapon:SetAmmoBag(weapon:GetAmmoClip() * 3)
 
 	if (DeathmatchSettings.weapons_to_use == "default") then
-		-- Adds random texture pattern
 		weapon:SetMaterialTextureParameter("PatternTexture", "assets///nanos-world/Textures/Pattern/" .. PatternList[math.random(#PatternList)])
 		weapon:SetMaterialScalarParameter("PatternBlend", 1)
 		weapon:SetMaterialScalarParameter("PatternTiling", 2)
