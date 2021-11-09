@@ -58,15 +58,6 @@ Events.Subscribe("UpdateHealth", function(health) {
 	document.querySelector("#health_container").style.backgroundColor = health <= 25 ? "#ff05053d" : "#0000003d";
 });
 
-Events.Subscribe("ToggleScoreboard", function(enable) {
-	const scoreboard = document.querySelector("#scoreboard");
-
-	if (enable)
-		scoreboard.style.display = "block";
-	else
-		scoreboard.style.display = "none";
-});
-
 // Function to sort the scoreboard by score
 function SortScoreboard() {
 	// Invalidates the scoreboard_change cache
