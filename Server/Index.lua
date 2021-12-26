@@ -249,8 +249,7 @@ DeathmatchSettings = {
 	post_time = 15,
 	multikill_time = 6,
 	multikill_time_multiplier = 1,
-	spawn_locations = {
-	},
+	spawn_locations = Server.GetMapSpawnPoints(),
 	weapons_to_use = "default", -- "quaternius"
 	mode = GAME_MODE.DEATHMATCH
 }
@@ -653,7 +652,9 @@ function RespawnPlayer(player)
 
 	local character = player:GetControlledCharacter()
 
-	local spawn_location = #DeathmatchSettings.spawn_locations > 0 and (DeathmatchSettings.spawn_locations[math.random(#DeathmatchSettings.spawn_locations)] + Vector(0, 0, math.random(5000, 6000))) or Vector(math.random(-3000, 3000), math.random(-3000, 3000), math.random(5000, 6000))
+	local spawn_point = DeathmatchSettings.spawn_locations[math.random(#DeathmatchSettings.spawn_locations)]
+
+	local spawn_location = spawn_point.location + Vector(0, 0, math.random(5000, 6000)) or Vector(math.random(-3000, 3000), math.random(-3000, 3000), math.random(5000, 6000))
 	-- local spawn_location = Vector(
 	-- 	math.random(-5000, 5000),
 	-- 	math.random(-5000, 5000),
@@ -671,11 +672,11 @@ function RespawnPlayer(player)
 		end
 
 		-- Respawns the character
-		character:Respawn(spawn_location)
+		character:Respawn(spawn_location, spawn_point.rotation or Rotator())
 	else
 		-- character = Character(spawn_location.location, spawn_location.rotation, "nanos-world::SK_Mannequin")
 		-- Spawns a new character
-		character = Character(spawn_location, Rotator(), "nanos-world::SK_Mannequin")
+		character = Character(spawn_location, spawn_point.rotation or Rotator(), "nanos-world::SK_Mannequin")
 		player:Possess(character)
 	end
 
@@ -843,8 +844,3 @@ Timer.SetInterval(function()
 		end
 	end
 end, 1000)
-
--- Catches a custom event "MapLoaded" to override this script spawn locations
-Events.Subscribe("MapLoaded", function(map_custom_spawn_locations)
-	DeathmatchSettings.spawn_locations = map_custom_spawn_locations
-end)
