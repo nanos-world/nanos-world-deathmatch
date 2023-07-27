@@ -20,7 +20,7 @@ Package.Subscribe("Load", function()
 end)
 
 -- Toggles the Scoreboard
-Client.Subscribe("KeyUp", function(key_name)
+Input.Subscribe("KeyUp", function(key_name)
 	if (key_name == "Tab") then
 		if (Deathmatch.match_state == MATCH_STATES.POST_TIME) then return end
 
@@ -30,7 +30,7 @@ Client.Subscribe("KeyUp", function(key_name)
 end)
 
 -- Toggles the Scoreboard
-Client.Subscribe("KeyDown", function(key_name)
+Input.Subscribe("KeyDown", function(key_name)
 	if (key_name == "Tab") then
 		if (Deathmatch.match_state == MATCH_STATES.POST_TIME) then return end
 

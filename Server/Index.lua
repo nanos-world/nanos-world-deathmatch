@@ -521,7 +521,7 @@ function UpdateMatchState(new_state)
 	if (new_state == MATCH_STATES.WARM_UP) then
 		Deathmatch.remaining_time = DeathmatchSettings.warmup_time
 
-		Package.Log("[Deathmatch] Warm-up!")
+		Console.Log("[Deathmatch] Warm-up!")
 		Server.BroadcastChatMessage("<grey>Warm-up!</>")
 
 		CleanUp()
@@ -531,7 +531,7 @@ function UpdateMatchState(new_state)
 
 		Events.BroadcastRemote("SpawnSound", Vector(), "unreal-tournament-announcer::A_Prepare", true, 1, 1)
 
-		Package.Log("[Deathmatch] Preparing!")
+		Console.Log("[Deathmatch] Preparing!")
 		Server.BroadcastChatMessage("<grey>Preparing!</>")
 
 		CleanUp()
@@ -548,7 +548,7 @@ function UpdateMatchState(new_state)
 
 		Events.BroadcastRemote("SpawnSound", Vector(), "unreal-tournament-announcer::A_Proceed", true, 1, 1)
 
-		Package.Log("[Deathmatch] Round started!")
+		Console.Log("[Deathmatch] Round started!")
 		Server.BroadcastChatMessage("<grey>Round Started!</>")
 
 		-- Unfreeze all characters
@@ -591,7 +591,7 @@ function UpdateMatchState(new_state)
 
 		Server.BroadcastChatMessage("<grey>=============================</>")
 
-		Package.Log("[Deathmatch] Post time!")
+		Console.Log("[Deathmatch] Post time!")
 		Server.BroadcastChatMessage("<grey>Post time!</>")
 	end
 
