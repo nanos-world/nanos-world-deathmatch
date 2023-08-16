@@ -5,7 +5,7 @@
     # contributors
     author =                "nanos™"
     # version
-    version =               "1.5.0"
+    version =               "1.6.0"
 
 # game-mode configurations
 [game_mode]
@@ -16,10 +16,10 @@
     # whether to load all level entities on client - only enable it if your package needs to use level static meshes entities
     load_level_entities =   false
     # the game version (major.minor) at the time this package was created, for granting compatibility between breaking changes
-    compatibility_version = "1.45"
+    compatibility_version = "1.58"
     # packages requirements
     packages_requirements = [
-                            
+                            "default-weapons",
     ]
     # asset packs requirements
     assets_requirements = [
@@ -27,7 +27,7 @@
     ]
     # compatible maps - maps to be highlighted when starting a new game through main menu
     compatible_maps = [
-                            
+
     ]
 
 # game-mode custom settings configurations

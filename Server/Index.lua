@@ -1,5 +1,3 @@
-Package.RequirePackage("nanos-world-weapons")
-
 -- List of the Default Weapons
 DefaultWeapons = {
 	NanosWorldWeapons.AK47,
@@ -320,7 +318,7 @@ function AddKill(player, location)
 	if (kill_streak >= 5) then
 		local label, sound_asset, score = GetKillStreakLabel(kill_streak)
 
-		Server.BroadcastChatMessage("<cyan>" .. player:GetName() .. "</> is on a <red>" .. kill_streak .. "</> kill streak!")
+		Chat.BroadcastMessage("<cyan>" .. player:GetName() .. "</> is on a <red>" .. kill_streak .. "</> kill streak!")
 
 		if (label) then
 			-- Adds a score for kill streak
@@ -342,7 +340,7 @@ function AddKill(player, location)
 
 		local label, sound_asset, score = GetMultiKillLabel(multikill_count)
 
-		Server.BroadcastChatMessage("<cyan>" .. player:GetName() .. "</> made a <red>" .. label .. "</>")
+		Chat.BroadcastMessage("<cyan>" .. player:GetName() .. "</> made a <red>" .. label .. "</>")
 
 		-- Adds a score for multi kill
 		if (DeathmatchSettings.mode == GAME_MODE.DEATHMATCH) then
@@ -413,7 +411,7 @@ function AddDeath(player, instigator)
 				AddScore(instigator, 50, "killstreak_ended", "KILLSTREAK ENDED")
 			end
 
-			Server.BroadcastChatMessage("<cyan>" .. instigator:GetName() .. "</> ended <cyan>" .. player:GetName() .. "'s</> <red>" .. kill_streak .. "</> streak!")
+			Chat.BroadcastMessage("<cyan>" .. instigator:GetName() .. "</> ended <cyan>" .. player:GetName() .. "'s</> <red>" .. kill_streak .. "</> streak!")
 		end
 	end
 
@@ -522,7 +520,7 @@ function UpdateMatchState(new_state)
 		Deathmatch.remaining_time = DeathmatchSettings.warmup_time
 
 		Console.Log("[Deathmatch] Warm-up!")
-		Server.BroadcastChatMessage("<grey>Warm-up!</>")
+		Chat.BroadcastMessage("<grey>Warm-up!</>")
 
 		CleanUp()
 
@@ -532,13 +530,13 @@ function UpdateMatchState(new_state)
 		Events.BroadcastRemote("SpawnSound", Vector(), "unreal-tournament-announcer::A_Prepare", true, 1, 1)
 
 		Console.Log("[Deathmatch] Preparing!")
-		Server.BroadcastChatMessage("<grey>Preparing!</>")
+		Chat.BroadcastMessage("<grey>Preparing!</>")
 
 		CleanUp()
 
 		-- Freeze all characters
 		for k, character in pairs(Character.GetAll()) do
-			character:SetMovementEnabled(false)
+			character:SetInputEnabled(false)
 			character:SetFlyingMode(true)
 		end
 
@@ -549,11 +547,11 @@ function UpdateMatchState(new_state)
 		Events.BroadcastRemote("SpawnSound", Vector(), "unreal-tournament-announcer::A_Proceed", true, 1, 1)
 
 		Console.Log("[Deathmatch] Round started!")
-		Server.BroadcastChatMessage("<grey>Round Started!</>")
+		Chat.BroadcastMessage("<grey>Round Started!</>")
 
 		-- Unfreeze all characters
 		for k, character in pairs(Character.GetAll()) do
-			character:SetMovementEnabled(true)
+			character:SetInputEnabled(true)
 			character:SetFlyingMode(false)
 		end
 
@@ -562,13 +560,13 @@ function UpdateMatchState(new_state)
 
 		-- Freeze all characters
 		for k, character in pairs(Character.GetAll()) do
-			character:SetMovementEnabled(false)
+			character:SetInputEnabled(false)
 			character:SetFlyingMode(true)
 		end
 
 		-- Match summary
-		Server.BroadcastChatMessage("<green>End of match!</> Scoreboard:")
-		Server.BroadcastChatMessage("<grey>=============================</>")
+		Chat.BroadcastMessage("<green>End of match!</> Scoreboard:")
+		Chat.BroadcastMessage("<grey>=============================</>")
 
 		local player_rank = {}
 
@@ -586,13 +584,13 @@ function UpdateMatchState(new_state)
 				Events.CallRemote("SpawnSound", player, Vector(), "unreal-tournament-announcer::A_LastPlace", true, 1, 1)
 			end
 
-			Server.BroadcastChatMessage(tostring(rank) .. "# <cyan>" .. player:GetName() .. "</>: " .. tostring(player:GetValue("Score") or 0))
+			Chat.BroadcastMessage(tostring(rank) .. "# <cyan>" .. player:GetName() .. "</>: " .. tostring(player:GetValue("Score") or 0))
 		end
 
-		Server.BroadcastChatMessage("<grey>=============================</>")
+		Chat.BroadcastMessage("<grey>=============================</>")
 
 		Console.Log("[Deathmatch] Post time!")
-		Server.BroadcastChatMessage("<grey>Post time!</>")
+		Chat.BroadcastMessage("<grey>Post time!</>")
 	end
 
 	-- Sends to the player the new match state
@@ -608,7 +606,7 @@ Events.Subscribe("PlayerReady", function(player)
 
 		-- If is preparing, freeze him
 		if (Deathmatch.match_state == MATCH_STATES.PREPARING) then
-			character:SetMovementEnabled(false)
+			character:SetInputEnabled(false)
 			character:SetFlyingMode(true)
 		end
 	end
@@ -616,7 +614,7 @@ Events.Subscribe("PlayerReady", function(player)
 	-- Sends him the match state
 	UpdatePlayerMatchState(player)
 
-	Server.BroadcastChatMessage("<cyan>" .. player:GetName() .. "</> has joined the server")
+	Chat.BroadcastMessage("<cyan>" .. player:GetName() .. "</> has joined the server")
 end)
 
 -- When Player leaves the server
@@ -627,7 +625,7 @@ Player.Subscribe("Destroy", function(player)
 		character:Destroy()
 	end
 
-	Server.BroadcastChatMessage("<cyan>" .. player:GetName() .. "</> has left the server")
+	Chat.BroadcastMessage("<cyan>" .. player:GetName() .. "</> has left the server")
 end)
 
 -- Helper for cleaning up deathmatch data from player
@@ -681,7 +679,7 @@ function RespawnPlayer(player)
 	end
 
 	if (Deathmatch.match_state == MATCH_STATES.PREPARING) then
-		character:SetMovementEnabled(false)
+		character:SetInputEnabled(false)
 	end
 
 	-- Spawns a new weapon
@@ -735,7 +733,7 @@ function SpawnWeapon(player)
 	weapon:SetAmmoBag(weapon:GetAmmoClip() * 3)
 
 	if (DeathmatchSettings.weapons_to_use == "default") then
-		weapon:SetMaterialTextureParameter("PatternTexture", "assets///nanos-world/Textures/Pattern/" .. PatternList[math.random(#PatternList)])
+		weapon:SetMaterialTextureParameter("PatternTexture", "assets://nanos-world/Textures/Pattern/" .. PatternList[math.random(#PatternList)])
 		weapon:SetMaterialScalarParameter("PatternBlend", 1)
 		weapon:SetMaterialScalarParameter("PatternTiling", 2)
 		weapon:SetMaterialScalarParameter("PatternRoughness", 0.3)
@@ -751,11 +749,11 @@ function SpawnPowerUp(location)
 	-- Spawns 2 props for making a cross
 	local powerup_01 = Prop(new_location, Rotator(), "nanos-world::SM_Cube", CollisionType.NoCollision, false, false)
 	powerup_01:SetScale(Vector(0.75, 0.25, 0.25))
-	powerup_01:SetMaterialColorParameter("Emissive", Color.GREEN * 100)
+	powerup_01:SetMaterialColorParameter("Emissive", Color.GREEN * 10)
 
 	local powerup_02 = Prop(new_location, Rotator(), "nanos-world::SM_Cube", CollisionType.NoCollision, false, false)
 	powerup_02:SetScale(Vector(0.25, 0.25, 0.75))
-	powerup_02:SetMaterialColorParameter("Emissive", Color.GREEN * 100)
+	powerup_02:SetMaterialColorParameter("Emissive", Color.GREEN * 10)
 
 	-- Spawns a trigger to activate the power up in a character
 	local trigger = Trigger(new_location, Rotator(), Vector(100), TriggerType.Sphere, false)
@@ -766,13 +764,13 @@ function SpawnPowerUp(location)
 
 	-- If a character overlaps it, he gets the power up
 	trigger:Subscribe("BeginOverlap", function(self, object)
-		if (NanosUtils.IsA(object, Character) and object:GetHealth() > 0) then
+		if (object:IsA(Character) and object:GetHealth() > 0) then
 			-- Gives Health
 			object:SetHealth(math.min(object:GetHealth() + 50, 120))
 
 			-- Gives Ammo
 			local weapon = object:GetPicked()
-			if (weapon and NanosUtils.IsA(weapon, Weapon)) then
+			if (weapon and weapon:IsA(Weapon)) then
 				weapon:SetAmmoBag(math.min(weapon:GetAmmoBag() + 50, 100))
 			end
 

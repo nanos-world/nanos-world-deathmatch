@@ -4,9 +4,9 @@ MainHUD = WebUI("Deathmatch HUD", "file:///UI/index.html")
 ScoreboardToggled = false
 
 -- Spawns a Sun at 9:30 AM
-World.SpawnDefaultSun()
-World.SetTime(9, 30)
-World.SetSunSpeed(0)
+Sky.Spawn()
+Sky.SetTimeOfDay(9, 30)
+Sky.SetAnimateTimeOfDay(false)
 
 -- Deathmatch data
 Deathmatch = {
@@ -113,13 +113,13 @@ function UpdateLocalCharacter(character)
 	local current_picked_item = character:GetPicked()
 
 	-- If so, update the UI
-	if (current_picked_item and current_picked_item:GetType() == "Weapon" and not current_picked_item:GetValue("ToolGun")) then
+	if (current_picked_item and current_picked_item:IsA(Weapon) and not current_picked_item:GetValue("ToolGun")) then
 		UpdateAmmo(true, current_picked_item:GetAmmoClip(), current_picked_item:GetAmmoBag())
 	end
 
 	-- Sets on character an event to update his grabbing weapon (to show ammo on UI)
 	character:Subscribe("PickUp", function(charac, object)
-		if (object:GetType() == "Weapon" and not object:GetValue("ToolGun")) then
+		if (object:IsA(Weapon) and not object:GetValue("ToolGun")) then
 			UpdateAmmo(true, object:GetAmmoClip(), object:GetAmmoBag())
 
 			-- Sets on character an event to update the UI when he fires
@@ -163,7 +163,7 @@ Player.Subscribe("Destroy", function(player)
 end)
 
 -- Receives from server the current match_state and remaining_time
-Events.Subscribe("UpdateMatchState", function(match_state, remaining_time)
+Events.SubscribeRemote("UpdateMatchState", function(match_state, remaining_time)
 	Deathmatch.match_state = match_state
 	Deathmatch.remaining_time = remaining_time - 1
 
@@ -193,16 +193,16 @@ Events.Subscribe("UpdateMatchState", function(match_state, remaining_time)
 end)
 
 -- Helpers for spawning sounds
-Events.Subscribe("SpawnSound", function(location, sound_asset, is_2D, volume, pitch)
+Events.SubscribeRemote("SpawnSound", function(location, sound_asset, is_2D, volume, pitch)
 	Sound(location, sound_asset, is_2D, true, SoundType.SFX, volume, pitch)
 end)
 
-Events.Subscribe("SpawnActionSound", function(location, sound_asset)
+Events.SubscribeRemote("SpawnActionSound", function(location, sound_asset)
 	Sound(location, sound_asset, false, true, SoundType.SFX, 1, 1, 400, 10000, AttenuationFunction.LogReverse)
 end)
 
 -- When local Picks Up a Power Up, forces it to update the health and ammo
-Events.Subscribe("PickedUpPowerUp", function()
+Events.SubscribeRemote("PickedUpPowerUp", function()
 	Sound(Vector(), "nanos-world::A_VR_Open", true, true, SoundType.SFX, 1, 1)
 
 	local character = Client.GetLocalPlayer():GetControlledCharacter()
@@ -210,7 +210,7 @@ Events.Subscribe("PickedUpPowerUp", function()
 		UpdateHealth(character:GetHealth())
 
 		local weapon = character:GetPicked()
-		if (weapon and NanosUtils.IsA(weapon, Weapon)) then
+		if (weapon and weapon:IsA(Weapon)) then
 			UpdateAmmo(true, weapon:GetAmmoClip(), weapon:GetAmmoBag())
 		end
 	end

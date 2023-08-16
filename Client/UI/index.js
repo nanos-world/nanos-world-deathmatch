@@ -115,7 +115,7 @@ Events.Subscribe("UpdateMatchStatus", function(label, remaining_time) {
 setInterval(function() {
 	if (current_time > 0) {
 		current_time--;
-		
+
 		const mins = ("00" + Math.floor(current_time / 60)).slice(-2);
 		const seconds = ("00" + (current_time % 60)).slice(-2);
 
