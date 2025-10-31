@@ -1,243 +1,4 @@
--- List of the Default Weapons
-DefaultWeapons = {
-	NanosWorldWeapons.AK47,
-	NanosWorldWeapons.AK5C,
-	NanosWorldWeapons.GE3,
-	NanosWorldWeapons.P90,
-	NanosWorldWeapons.UMP45,
-	NanosWorldWeapons.Makarov,
-	NanosWorldWeapons.M1911,
-	NanosWorldWeapons.SA80,
-	NanosWorldWeapons.Ithaca37,
-	NanosWorldWeapons.Rem870,
-	NanosWorldWeapons.SPAS12,
-	NanosWorldWeapons.AWP,
-	NanosWorldWeapons.AK74U,
-	NanosWorldWeapons.GE36,
-	NanosWorldWeapons.Glock,
-	NanosWorldWeapons.DesertEagle,
-	NanosWorldWeapons.AR4,
-	NanosWorldWeapons.Moss500,
-	NanosWorldWeapons.AP5,
-	NanosWorldWeapons.SMG11,
-	NanosWorldWeapons.Lewis,
-	NanosWorldWeapons.M1Garand,
-	NanosWorldWeapons.ColtPython,
-}
-
--- List of Weapons used in GunGame mode
-GunGameWeapons = {
-	-- SMGs
-	[0] = NanosWorldWeapons.P90,
-	[1] = NanosWorldWeapons.UMP45,
-	[2] = NanosWorldWeapons.AP5,
-	-- Rifles
-	[3] = NanosWorldWeapons.AR4,
-	[4] = NanosWorldWeapons.GE36,
-	[5] = NanosWorldWeapons.GE3,
-	[6] = NanosWorldWeapons.AK47,
-	-- Shotguns
-	[7] = NanosWorldWeapons.Rem870,
-	[8] = NanosWorldWeapons.Ithaca37,
-	[9] = NanosWorldWeapons.SPAS12,
-	-- Sniper
-	[10] = NanosWorldWeapons.AWP,
-	-- Machine
-	[11] = NanosWorldWeapons.Lewis,
-	-- Pistols
-	[12] = NanosWorldWeapons.DesertEagle,
-	[13] = NanosWorldWeapons.Makarov,
-	[14] = NanosWorldWeapons.M1911,
-	[15] = NanosWorldWeapons.Glock,
-}
-
--- List of Quaternius Weapons
-QuaterniusWeapons = {
-	"SpawnAssaultRifle_01",
-	"SpawnAssaultRifle_02",
-	"SpawnAssaultRifle_03",
-	"SpawnAssaultRifle_04",
-	"SpawnAssaultRifle_05",
-	"SpawnAssaultRifle_06",
-	"SpawnAssaultRifle_07",
-	"SpawnAssaultRifle_08",
-	"SpawnAssaultRifle_09",
-
-	"SpawnBullpup_01",
-	"SpawnBullpup_02",
-	"SpawnBullpup_03",
-
-	"SpawnPistol_01",
-	"SpawnPistol_02",
-	"SpawnPistol_03",
-	"SpawnPistol_04",
-	"SpawnPistol_05",
-	"SpawnPistol_06",
-
-	"SpawnRevolver_01",
-	"SpawnRevolver_02",
-	"SpawnRevolver_03",
-	"SpawnRevolver_04",
-	"SpawnRevolver_05",
-
-	"SpawnSubmachineGun_01",
-	"SpawnSubmachineGun_02",
-	"SpawnSubmachineGun_03",
-	"SpawnSubmachineGun_04",
-	"SpawnSubmachineGun_05",
-
-	"SpawnShotgun_01",
-	"SpawnShotgun_02",
-	"SpawnShotgun_03",
-	"SpawnShotgun_04",
-	"SpawnShotgun_05",
-
-	"SpawnShotgun_SawedOff",
-
-	"SpawnSniperRifle_01",
-	"SpawnSniperRifle_02",
-	"SpawnSniperRifle_03",
-	"SpawnSniperRifle_04",
-	"SpawnSniperRifle_05",
-}
-
--- List of textures patterns for default weapons
-PatternList = {
-	"T_80s_Pattern.jpg",
-	"T_Chochip_Pattern.jpg",
-	"T_Cracks_Pattern.jpg",
-	"T_Desert_Marpat_Pattern.jpg",
-	"T_Hexagon_Glow_Pattern.jpg",
-	"T_Hexagon_Pattern.jpg",
-	"T_Ink_Pattern.jpg",
-	"T_LeafSpray_Pattern.jpg",
-	"T_Net01_Pattern.jpg",
-	"T_Stripes_Pattern.jpg",
-	"T_Urban_Marpat_Pattern.jpg",
-	"T_W90_Pattern.jpg",
-	"T_W90K_Pattern.jpg",
-	"T_Wood_Marpat_Pattern.jpg",
-	"T_Murica_Pattern.jpg",
-	"T_Watermelon_Pattern.jpg",
-	"T_Infernoo.jpg",
-	"T_Pattern_001.jpg",
-	"T_Pattern_002.jpg",
-	"T_Pattern_003.jpg",
-	"T_Pattern_004.jpg",
-	"T_Pattern_005.jpg",
-	"T_Pattern_006.jpg",
-	"T_Pattern_007.jpg",
-	"T_Pattern_008.jpg",
-	"T_Pattern_009.jpg",
-	"T_Pattern_010.jpg",
-	"T_Pattern_011.jpg",
-	"T_Pattern_012.jpg",
-	"T_Pattern_013.jpg",
-	"T_Pattern_014.jpg",
-	"T_Pattern_015.jpg",
-	"T_Pattern_016.jpg",
-	"T_Pattern_017.jpg",
-	"T_Pattern_018.jpg",
-	"T_Pattern_019.jpg",
-	"T_Pattern_020.jpg",
-	"T_Pattern_021.jpg",
-	"T_Pattern_022.jpg",
-	"T_Pattern_023.jpg",
-	"T_Pattern_024.jpg",
-	"T_Pattern_025.jpg",
-	"T_Pattern_026.jpg",
-	"T_Pattern_027.jpg",
-	"T_Pattern_028.jpg",
-	"T_Pattern_029.jpg",
-	"T_Pattern_030.jpg",
-	"T_Pattern_031.jpg",
-	"T_Pattern_032.jpg",
-	"T_Pattern_033.jpg",
-	"T_Pattern_034.jpg",
-	"T_Pattern_035.jpg",
-	"T_Pattern_036.jpg",
-	"T_Pattern_037.jpg",
-	"T_Pattern_038.jpg",
-	"T_Pattern_039.jpg",
-	"T_Pattern_040.jpg",
-	"T_Pattern_041.jpg",
-	"T_Pattern_042.jpg",
-	"T_Pattern_043.jpg",
-	"T_Pattern_044.jpg",
-	"T_Pattern_045.jpg",
-	"T_Pattern_046.jpg",
-	"T_Pattern_047.jpg",
-	"T_Pattern_048.jpg",
-	"T_Pattern_049.jpg",
-	"T_Pattern_050.jpg",
-	"T_Pattern_051.jpg",
-	"T_Pattern_052.jpg",
-	"T_Pattern_053.jpg",
-	"T_Pattern_054.jpg",
-	"T_Pattern_055.jpg",
-	"T_Pattern_056.jpg",
-	"T_Pattern_057.jpg",
-	"T_Pattern_058.jpg",
-	"T_Pattern_059.jpg",
-	"T_Pattern_060.jpg",
-	"T_Pattern_061.jpg",
-	"T_Pattern_062.jpg",
-	"T_Pattern_063.jpg",
-	"T_Pattern_064.jpg",
-	"T_Pattern_065.jpg",
-	"T_Pattern_066.jpg",
-	"T_Pattern_067.jpg",
-	"T_Pattern_068.jpg",
-	"T_Pattern_069.jpg",
-	"T_Pattern_070.jpg",
-	"T_Pattern_071.jpg",
-	"T_Pattern_072.jpg",
-	"T_Pattern_073.jpg",
-	"T_Pattern_074.jpg",
-	"T_Pattern_075.jpg",
-	"T_Pattern_076.jpg",
-	"T_Pattern_077.jpg",
-	"T_Pattern_078.jpg",
-	"T_Pattern_079.jpg",
-	"T_Pattern_080.jpg",
-	"T_Pattern_081.jpg",
-	"T_Pattern_082.jpg",
-	"T_Pattern_083.jpg",
-	"T_Pattern_084.jpg",
-	"T_Pattern_085.jpg",
-	"T_Pattern_086.jpg",
-	"T_Pattern_087.jpg",
-	"T_Pattern_088.jpg",
-	"T_Pattern_089.jpg",
-	"T_Pattern_090.jpg",
-	"T_Pattern_091.jpg",
-	"T_Pattern_092.jpg",
-	"T_Pattern_093.jpg",
-	"T_Pattern_094.jpg",
-	"T_Pattern_095.jpg",
-	"T_Pattern_096.jpg",
-	"T_Pattern_097.jpg",
-	"T_Pattern_098.jpg",
-	"T_Pattern_099.jpg",
-	"T_Pattern_100.jpg",
-	"T_Pattern_101.jpg",
-	"T_Pattern_102.jpg",
-	"T_Pattern_103.jpg",
-	"T_Pattern_104.jpg",
-	"T_Pattern_105.jpg",
-	"T_Pattern_106.jpg",
-	"T_Pattern_107.jpg",
-	"T_Pattern_108.jpg",
-	"T_Pattern_109.jpg",
-	"T_Pattern_110.jpg",
-	"T_Pattern_111.jpg",
-	"T_Pattern_112.jpg",
-	"T_Pattern_113.jpg",
-	"T_Pattern_114.jpg",
-	"T_Pattern_115.jpg",
-	"T_Pattern_116.jpg",
-	"T_Pattern_117.jpg"
-}
+Package.Require("Config.lua")
 
 -- Deathmatch Settings
 DeathmatchSettings = {
@@ -257,29 +18,9 @@ Deathmatch = {
 	match_state = 0,
 	remaining_time = 0,
 	first_blood = false,
+	sky_hour_time = 9, -- Hour of the day
 }
 
--- Helper for getting the correct announcer and label from kill count multi kill
-function GetMultiKillLabel(kill_count)
-	if (kill_count == 2) then return "DOUBLE KILL", "unreal-tournament-announcer::A_DoubleKill", 25 end
-	if (kill_count == 3) then return "TRIPLE KILL", "unreal-tournament-announcer::A_TripleKill", 50 end
-	if (kill_count == 4) then return "MULTI KILL", "unreal-tournament-announcer::A_MultiKill", 100 end
-	if (kill_count == 5) then return "MEGA KILL!", "unreal-tournament-announcer::A_MegaKill", 200 end
-	if (kill_count == 6) then return "ULTRA KILL!!", "unreal-tournament-announcer::A_UltraKill", 300 end
-
-	return "MONSTER KILL!!!", "unreal-tournament-announcer::A_MonsterKill", 500
-end
-
--- Helper for getting the correct announcer and label from kill count kill streak
-function GetKillStreakLabel(kill_count)
-	if (kill_count == 5) then return "KILLING SPREE", "unreal-tournament-announcer::A_KillingSpree", 100 end
-	if (kill_count == 10) then return "RAMPAGE!", "unreal-tournament-announcer::A_Rampage", 200 end
-	if (kill_count == 15) then return "DOMINATING!!", "unreal-tournament-announcer::A_Dominating", 300 end
-	if (kill_count == 20) then return "UNSTOPPABLE!!!", "unreal-tournament-announcer::A_Unstoppable", 400 end
-	if (kill_count >= 25) then return "GODLIKE!!!!!", "unreal-tournament-announcer::A_Godlike", 500 end
-
-	return nil
-end
 
 -- Helper for spawning an announcer sound
 function SpawnActionSound(location, asset, player)
@@ -376,7 +117,7 @@ function AddKill(player, location)
 
 			-- If has a weapon, destroys it
 			local character = player:GetControlledCharacter()
-			local weapon = player:GetValue("Weapon")
+			local weapon = character:GetPicked()
 			local old_aiming = character:GetWeaponAimMode()
 
 			if (weapon and weapon:IsValid()) then
@@ -386,7 +127,6 @@ function AddKill(player, location)
 			local new_weapon = SpawnWeapon(player)
 
 			if (new_weapon) then
-				player:SetValue("Weapon", new_weapon)
 				character:PickUp(new_weapon)
 				character:SetWeaponAimMode(old_aiming)
 			end
@@ -433,7 +173,7 @@ end
 -- Adds score when damaging
 Character.Subscribe("TakeDamage", function(character, damage, bone, type, from, instigator, causer)
 	-- If it's suicide, ignore it
-	if (not instigator or instigator == character:GetPlayer()) then
+	if (not instigator or instigator == character:GetPlayer() or character:IsDead()) then
 		return
 	end
 
@@ -486,8 +226,8 @@ Character.Subscribe("Death", function(character, last_damage_taken, last_bone_da
 		-- Adds a death to count
 		AddDeath(dead_player, instigator)
 
-		-- Immediately destroys the wepaon
-		local weapon = dead_player:GetValue("Weapon")
+		-- Immediately destroys the weapon
+		local weapon = character:GetPicked()
 
 		if (weapon and weapon:IsValid()) then
 			weapon:Destroy()
@@ -505,6 +245,11 @@ Character.Subscribe("Death", function(character, last_damage_taken, last_bone_da
 	end
 end)
 
+-- Destroys weapons if dropped, i.e. when Character dies
+Weapon.Subscribe("Drop", function(weapon, character)
+	weapon:Destroy()
+end)
+
 -- When package load, starts a Warm Up
 Package.Subscribe("Load", function()
 	Timer.SetTimeout(function()
@@ -518,8 +263,9 @@ function UpdateMatchState(new_state)
 
 	if (new_state == MATCH_STATES.WARM_UP) then
 		Deathmatch.remaining_time = DeathmatchSettings.warmup_time
+		Deathmatch.sky_hour_time = math.random(0, 24) -- random time
 
-		Console.Log("[Deathmatch] Warm-up!")
+		Console.Log("Warm-up!")
 		Chat.BroadcastMessage("<grey>Warm-up!</>")
 
 		CleanUp()
@@ -529,7 +275,7 @@ function UpdateMatchState(new_state)
 
 		Events.BroadcastRemote("SpawnSound", Vector(), "unreal-tournament-announcer::A_Prepare", true, 1, 1)
 
-		Console.Log("[Deathmatch] Preparing!")
+		Console.Log("Preparing!")
 		Chat.BroadcastMessage("<grey>Preparing!</>")
 
 		CleanUp()
@@ -546,7 +292,7 @@ function UpdateMatchState(new_state)
 
 		Events.BroadcastRemote("SpawnSound", Vector(), "unreal-tournament-announcer::A_Proceed", true, 1, 1)
 
-		Console.Log("[Deathmatch] Round started!")
+		Console.Log("Round started!")
 		Chat.BroadcastMessage("<grey>Round Started!</>")
 
 		-- Unfreeze all characters
@@ -584,12 +330,16 @@ function UpdateMatchState(new_state)
 				Events.CallRemote("SpawnSound", player, Vector(), "unreal-tournament-announcer::A_LastPlace", true, 1, 1)
 			end
 
-			Chat.BroadcastMessage(tostring(rank) .. "# <cyan>" .. player:GetName() .. "</>: " .. tostring(player:GetValue("Score") or 0))
+			local player_score = player:GetValue("Score") or 0
+
+			Chat.BroadcastMessage(tostring(rank) .. "# <cyan>" .. player:GetName() .. "</>: " .. tostring(player_score))
+
+			Events.CallRemote("SubmitScoreToSteamLeaderboard", player, player_score)
 		end
 
 		Chat.BroadcastMessage("<grey>=============================</>")
 
-		Console.Log("[Deathmatch] Post time!")
+		Console.Log("Post time!")
 		Chat.BroadcastMessage("<grey>Post time!</>")
 	end
 
@@ -598,7 +348,7 @@ function UpdateMatchState(new_state)
 end
 
 -- When player joins and/or is ready
-Events.Subscribe("PlayerReady", function(player)
+Events.SubscribeRemote("PlayerReady", function(player)
 	-- If the match is about to end, don't do nothing
 	if (Deathmatch.match_state ~= MATCH_STATES.POST_TIME) then
 		-- Respawns the character
@@ -637,7 +387,6 @@ function CleanUp()
 		player:SetValue("Deaths", 0, true)
 		player:SetValue("Score", 0, true)
 		player:SetValue("KillStreak", 0, true)
-		player:SetValue("Weapon", nil)
 		player:SetValue("AccumulatedKills", 0)
 
 		RespawnPlayer(player)
@@ -651,30 +400,34 @@ function RespawnPlayer(player)
 	local character = player:GetControlledCharacter()
 
 	local spawn_point = DeathmatchSettings.spawn_locations[math.random(#DeathmatchSettings.spawn_locations)]
+	if (not spawn_point) then spawn_point = { location = Vector(math.random(-3000, 3000), math.random(-3000, 3000), 0), rotation = Rotator.Random() } end
 
-	local spawn_location = spawn_point.location + Vector(0, 0, math.random(5000, 6000)) or Vector(math.random(-3000, 3000), math.random(-3000, 3000), math.random(5000, 6000))
-	-- local spawn_location = Vector(
-	-- 	math.random(-5000, 5000),
-	-- 	math.random(-5000, 5000),
-	-- 	5000
-	-- )
+	local spawn_location = spawn_point.location + Vector(0, 0, math.random(5000, 6000))
+	local spawn_rotation = spawn_point.rotation or Rotator.Random()
 
 	-- If player already has a character
 	if (character) then
 
 		-- If has a weapon, destroys it
-		local weapon = player:GetValue("Weapon")
+		local weapon = character:GetPicked()
 
 		if (weapon and weapon:IsValid()) then
 			weapon:Destroy()
 		end
 
 		-- Respawns the character
-		character:Respawn(spawn_location, spawn_point.rotation or Rotator())
+		character:Respawn(spawn_location, spawn_rotation)
 	else
-		-- character = Character(spawn_location.location, spawn_location.rotation, "nanos-world::SK_Mannequin")
 		-- Spawns a new character
-		character = Character(spawn_location, spawn_point.rotation or Rotator(), "nanos-world::SK_Mannequin")
+		local mesh = CharacterMeshes[math.random(#CharacterMeshes)]
+		character = Character(spawn_location, spawn_rotation, mesh)
+
+		-- Bad meshes come with mouth open by default
+		character:SetMorphTarget("Close_Mouth", 1)
+
+		character:SetCanDrop(false)
+		character:SetSpeedMultiplier(1.3)
+
 		player:Possess(character)
 	end
 
@@ -684,8 +437,6 @@ function RespawnPlayer(player)
 
 	-- Spawns a new weapon
 	local weapon = SpawnWeapon(player)
-
-	player:SetValue("Weapon", weapon)
 
 	if (weapon) then
 		character:PickUp(weapon)
@@ -749,14 +500,14 @@ function SpawnPowerUp(location)
 	-- Spawns 2 props for making a cross
 	local powerup_01 = Prop(new_location, Rotator(), "nanos-world::SM_Cube", CollisionType.NoCollision, false, false)
 	powerup_01:SetScale(Vector(0.75, 0.25, 0.25))
-	powerup_01:SetMaterialColorParameter("Emissive", Color.GREEN * 10)
+	powerup_01:SetMaterialColorParameter("Emissive", Color.GREEN * 1)
 
 	local powerup_02 = Prop(new_location, Rotator(), "nanos-world::SM_Cube", CollisionType.NoCollision, false, false)
 	powerup_02:SetScale(Vector(0.25, 0.25, 0.75))
-	powerup_02:SetMaterialColorParameter("Emissive", Color.GREEN * 10)
+	powerup_02:SetMaterialColorParameter("Emissive", Color.GREEN * 1)
 
 	-- Spawns a trigger to activate the power up in a character
-	local trigger = Trigger(new_location, Rotator(), Vector(100), TriggerType.Sphere, false)
+	local trigger = Trigger(new_location, Rotator(), Vector(100), TriggerType.Sphere, false, Color.BLACK, { "Character" })
 
 	-- Attaches the PowerUp props, so they get destroyed immediately when trigger is destroyed
 	powerup_01:AttachTo(trigger, AttachmentRule.SnapToTarget, "", 0)
@@ -764,7 +515,7 @@ function SpawnPowerUp(location)
 
 	-- If a character overlaps it, he gets the power up
 	trigger:Subscribe("BeginOverlap", function(self, object)
-		if (object:IsA(Character) and object:GetHealth() > 0) then
+		if (object:IsA(Character) and not object:IsDead()) then
 			-- Gives Health
 			object:SetHealth(math.min(object:GetHealth() + 50, 120))
 
@@ -774,8 +525,7 @@ function SpawnPowerUp(location)
 				weapon:SetAmmoBag(math.min(weapon:GetAmmoBag() + 50, 100))
 			end
 
-			-- Calls remote to force the player to update the Health/Ammo HUD
-			Events.CallRemote("PickedUpPowerUp", object:GetPlayer())
+			Events.CallRemote("SpawnSound", object:GetPlayer(), Vector(), "nanos-world::A_VR_Open", true, 1, 1)
 
 			self:Destroy()
 		end
@@ -788,9 +538,9 @@ end
 -- Helper for updating the player's match state
 function UpdatePlayerMatchState(player)
 	if (player) then
-		Events.CallRemote("UpdateMatchState", player, Deathmatch.match_state, Deathmatch.remaining_time)
+		Events.CallRemote("UpdateMatchState", player, Deathmatch.match_state, Deathmatch.remaining_time, Deathmatch.sky_hour_time)
 	else
-		Events.BroadcastRemote("UpdateMatchState", Deathmatch.match_state, Deathmatch.remaining_time)
+		Events.BroadcastRemote("UpdateMatchState", Deathmatch.match_state, Deathmatch.remaining_time, Deathmatch.sky_hour_time)
 	end
 end
 
@@ -802,20 +552,10 @@ end
 
 -- Helper for announcing the current match time
 function AnnounceCountdown()
-	if (Deathmatch.remaining_time == 300) then Events.BroadcastRemote("SpawnSound", Vector(), "unreal-tournament-announcer::A_Countdown_05_Minutes", true, 1, 1) return end
-	if (Deathmatch.remaining_time == 180) then Events.BroadcastRemote("SpawnSound", Vector(), "unreal-tournament-announcer::A_Countdown_03_Minutes", true, 1, 1) return end
-	if (Deathmatch.remaining_time == 60) then Events.BroadcastRemote("SpawnSound", Vector(), "unreal-tournament-announcer::A_Countdown_01_Minute", true, 1, 1) return end
-	if (Deathmatch.remaining_time == 30) then Events.BroadcastRemote("SpawnSound", Vector(), "unreal-tournament-announcer::A_Countdown_30_Seconds", true, 1, 1) return end
-	if (Deathmatch.remaining_time == 10) then Events.BroadcastRemote("SpawnSound", Vector(), "unreal-tournament-announcer::A_Countdown_10", true, 1, 1) return end
-	if (Deathmatch.remaining_time == 9) then Events.BroadcastRemote("SpawnSound", Vector(), "unreal-tournament-announcer::A_Countdown_09", true, 1, 1) return end
-	if (Deathmatch.remaining_time == 8) then Events.BroadcastRemote("SpawnSound", Vector(), "unreal-tournament-announcer::A_Countdown_08", true, 1, 1) return end
-	if (Deathmatch.remaining_time == 7) then Events.BroadcastRemote("SpawnSound", Vector(), "unreal-tournament-announcer::A_Countdown_07", true, 1, 1) return end
-	if (Deathmatch.remaining_time == 6) then Events.BroadcastRemote("SpawnSound", Vector(), "unreal-tournament-announcer::A_Countdown_06", true, 1, 1) return end
-	if (Deathmatch.remaining_time == 5) then Events.BroadcastRemote("SpawnSound", Vector(), "unreal-tournament-announcer::A_Countdown_05", true, 1, 1) return end
-	if (Deathmatch.remaining_time == 4) then Events.BroadcastRemote("SpawnSound", Vector(), "unreal-tournament-announcer::A_Countdown_04", true, 1, 1) return end
-	if (Deathmatch.remaining_time == 3) then Events.BroadcastRemote("SpawnSound", Vector(), "unreal-tournament-announcer::A_Countdown_03", true, 1, 1) return end
-	if (Deathmatch.remaining_time == 2) then Events.BroadcastRemote("SpawnSound", Vector(), "unreal-tournament-announcer::A_Countdown_02", true, 1, 1) return end
-	if (Deathmatch.remaining_time == 1) then Events.BroadcastRemote("SpawnSound", Vector(), "unreal-tournament-announcer::A_Countdown_01", true, 1, 1) return end
+	local announcer = GetCountdownAnnouncer()
+	if (not announcer) then return end
+
+	Events.BroadcastRemote("SpawnSound", Vector(), announcer, true, 1, 1)
 end
 
 -- Server Tick to check remaining times

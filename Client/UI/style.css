@@ -145,6 +145,8 @@ body {
 	line-height: 55px;
 	font-size: 20px;
 	background-color: #0000003d;
+	background-repeat: no-repeat;
+	background-size: 100%
 }
 
 .scoreboard_rank_score {

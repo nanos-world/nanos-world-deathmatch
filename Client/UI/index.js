@@ -70,7 +70,7 @@ function SortScoreboard() {
 	// Pushes all elements to a temp array
 	for (let i = 0, len = table.rows.length; i < len; i++) {
         const row = table.rows[i];
-        const score = parseInt(row.cells[2].innerText);
+        const score = parseInt(row.dataset.score);
 
 		if (!isNaN(score))
 			store.push([score, row]);
@@ -90,16 +90,23 @@ function SortScoreboard() {
     for (let i = 0; i < 10; i++) {
 		let name = "";
 		let score = "";
+		let steam_id = "";
+		let has_entry = i < store.length;
 
-		if (i < store.length) {
-			name = store[i][1].cells[1].innerText;
-			score = store[i][1].cells[2].innerText;
+		if (has_entry) {
+			name = store[i][1].dataset.name;
+			score = store[i][1].dataset.score;
+			steam_id = store[i][1].dataset.steam_id;
 		}
 
 		const rank_entry = document.getElementById(`scoreboard_rank_entry_${i}`);
 
 		const rank_entry_image = rank_entry.querySelector(".scoreboard_rank_image");
-		rank_entry_image.innerHTML = name.substring(0, 3).toUpperCase();
+		if (has_entry) {
+			rank_entry_image.style.backgroundImage = "url('steam-avatar://" + steam_id + "')";
+		} else {
+			rank_entry_image.style.backgroundImage = "";
+		}
 
 		const rank_entry_score = rank_entry.querySelector(".scoreboard_rank_score");
 		rank_entry_score.innerHTML = score;
@@ -122,18 +129,21 @@ setInterval(function() {
 		document.querySelector("#match_status").innerHTML = `${match_status}${mins.toString()}:${seconds.toString()}`;
 	}
 
+	// Note: this is always called because we update all players every 1 second
 	if (had_scoreboard_change)
 		SortScoreboard();
 }, 1000);
 
 // Function to update a player's data
-Events.Subscribe("UpdatePlayer", function(id, active, name, score, kills, deaths, ping) {
+Events.Subscribe("UpdatePlayer", function(id, active, steam_id, name, score, kills, deaths, ping) {
 	had_scoreboard_change = true;
 	const existing_scoreboard_entry = document.querySelector(`#scoreboard_entry_id${id}`);
 
 	if (active) {
 		// If the DOM exists, updates it
 		if (existing_scoreboard_entry) {
+			existing_scoreboard_entry.dataset.score = score;
+
 			const scoreboard_ping = existing_scoreboard_entry.querySelector("td.scoreboard_ping");
 			scoreboard_ping.innerHTML = ping;
 
@@ -152,6 +162,9 @@ Events.Subscribe("UpdatePlayer", function(id, active, name, score, kills, deaths
 		// Otherwise, creates a new element and push to the scoreboard
 		const scoreboard_entry_tr = document.createElement("tr");
 		scoreboard_entry_tr.id = `scoreboard_entry_id${id}`;
+		scoreboard_entry_tr.dataset.steam_id = steam_id;
+		scoreboard_entry_tr.dataset.score = score;
+		scoreboard_entry_tr.dataset.name = name;
 
 		const scoreboard_entry_td_id = document.createElement("td");
 		scoreboard_entry_td_id.className = "scoreboard_id";

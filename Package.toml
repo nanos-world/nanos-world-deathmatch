@@ -3,9 +3,9 @@
     # friendly name
     title =                 "Deathmatch"
     # contributors
-    author =                "nanos™"
+    author =                "nanos world™"
     # version
-    version =               "1.6.0"
+    version =               "1.7.0"
 
 # game-mode configurations
 [game_mode]
@@ -20,6 +20,7 @@
     # packages requirements
     packages_requirements = [
                             "default-weapons",
+                            "battlefield-kill-ui",
     ]
     # asset packs requirements
     assets_requirements = [

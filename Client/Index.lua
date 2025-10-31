@@ -3,46 +3,47 @@
 MainHUD = WebUI("Deathmatch HUD", "file:///UI/index.html")
 ScoreboardToggled = false
 
--- Spawns a Sun at 9:30 AM
+-- Spawns Sun
 Sky.Spawn()
 Sky.SetTimeOfDay(9, 30)
 Sky.SetAnimateTimeOfDay(false)
+
+-- Disable Debug settings
+Client.SetDebugEnabled(false)
 
 -- Deathmatch data
 Deathmatch = {
 	remaining_time = 0
 }
 
--- Calls Battlefield Kill UI to configure it - parameters: enable_autodamagescore, kill_score, headshot_score
-Package.Subscribe("Load", function()
-	Events.Call("ConfigureBattlefieldKillUI", false, 20, 20)
-	return false
-end)
+-- Updates Battlefield Kill UI configuration
+KillHUDUIConfiguration.enable_auto_damage_score = true
+KillHUDUIConfiguration.kill_auto_score = 20
+KillHUDUIConfiguration.headshot_auto_score = 20
+
+
+-- Input
+Input.Register("Scoreboard", "Tab", "Toggles the Scoreboard")
 
 -- Toggles the Scoreboard
-Input.Subscribe("KeyUp", function(key_name)
-	if (key_name == "Tab") then
-		if (Deathmatch.match_state == MATCH_STATES.POST_TIME) then return end
+Input.Bind("Scoreboard", InputEvent.Released, function()
+	if (Deathmatch.match_state == MATCH_STATES.POST_TIME) then return end
 
-		MainHUD:CallEvent("ToggleScoreboard", false)
-		ScoreboardToggled = false
-	end
+	MainHUD:CallEvent("ToggleScoreboard", false)
+	ScoreboardToggled = false
 end)
 
--- Toggles the Scoreboard
-Input.Subscribe("KeyDown", function(key_name)
-	if (key_name == "Tab") then
-		if (Deathmatch.match_state == MATCH_STATES.POST_TIME) then return end
+Input.Bind("Scoreboard", InputEvent.Pressed, function()
+	if (Deathmatch.match_state == MATCH_STATES.POST_TIME) then return end
 
-		MainHUD:CallEvent("ToggleScoreboard", true)
-		ScoreboardToggled = true
-		UpdateAllPlayersScoreboard()
-	end
+	MainHUD:CallEvent("ToggleScoreboard", true)
+	ScoreboardToggled = true
+	UpdateAllPlayersScoreboard()
 end)
 
--- Updates someone scoreboard data
+-- Updates someone's scoreboard data
 function UpdatePlayerScoreboard(player)
-	MainHUD:CallEvent("UpdatePlayer", player:GetID(), true, player:GetName(), player:GetValue("Score") or 0, player:GetValue("Kills") or 0, player:GetValue("Deaths") or 0, player:GetPing())
+	MainHUD:CallEvent("UpdatePlayer", player:GetID(), true, player:GetSteamID(), player:GetName(), player:GetValue("Score") or 0, player:GetValue("Kills") or 0, player:GetValue("Deaths") or 0, player:GetPing())
 end
 
 --  Adds someone to the scoreboard
@@ -93,20 +94,9 @@ function UpdateLocalCharacter(character)
 	-- Updates the UI with the current character's health
 	UpdateHealth(character:GetHealth())
 
-	-- Sets on character an event to update the health's UI after it takes damage
-	character:Subscribe("TakeDamage", function(charac, damage, type, bone, from_direction, instigator, causer)
-		-- Updates the Health UI
-		UpdateHealth(math.max(charac:GetHealth() - damage, 0))
-	end)
-
-	-- Sets on character an event to update the health's UI after it dies
-	character:Subscribe("Death", function(charac)
-		UpdateHealth(0)
-	end)
-
-	-- Sets on character an event to update the health's UI after it respawns
-	character:Subscribe("Respawn", function(charac)
-		UpdateHealth(100)
+	-- Sets on character an event to update the health's UI
+	character:Subscribe("HealthChange", function(charac, old_health, new_health)
+		UpdateHealth(new_health)
 	end)
 
 	-- Try to get if the character is holding any weapon
@@ -122,14 +112,13 @@ function UpdateLocalCharacter(character)
 		if (object:IsA(Weapon) and not object:GetValue("ToolGun")) then
 			UpdateAmmo(true, object:GetAmmoClip(), object:GetAmmoBag())
 
-			-- Sets on character an event to update the UI when he fires
-			character:Subscribe("Fire", function(charac, weapon)
-				UpdateAmmo(true, weapon:GetAmmoClip(), weapon:GetAmmoBag())
+			-- Sets on character an event to update the UI when the ammo changes
+			object:Subscribe("AmmoClipChange", function(weapon, old_ammo_clip, new_ammo_clip)
+				UpdateAmmo(true, new_ammo_clip, weapon:GetAmmoBag())
 			end)
 
-			-- Sets on character an event to update the UI when he reloads the weapon
-			character:Subscribe("Reload", function(charac, weapon, ammo_to_reload)
-				UpdateAmmo(true, weapon:GetAmmoClip(), weapon:GetAmmoBag())
+			object:Subscribe("AmmoBagChange", function(weapon, old_ammo_bag, new_ammo_bag)
+				UpdateAmmo(true, weapon:GetAmmoClip(), new_ammo_bag)
 			end)
 		end
 	end)
@@ -137,8 +126,8 @@ function UpdateLocalCharacter(character)
 	-- Sets on character an event to remove the ammo ui when he drops it's weapon
 	character:Subscribe("Drop", function(charac, object)
 		UpdateAmmo(false)
-		character:Unsubscribe("Fire")
-		character:Unsubscribe("Reload")
+		object:Unsubscribe("AmmoClipChange")
+		object:Unsubscribe("AmmoBagChange")
 	end)
 end
 
@@ -158,12 +147,11 @@ Player.Subscribe("VOIP", function(player, is_talking)
 end)
 
 Player.Subscribe("Destroy", function(player)
-	MainHUD:CallEvent("ToggleVoice", player:GetName(), false)
 	MainHUD:CallEvent("UpdatePlayer", player:GetID(), false)
 end)
 
 -- Receives from server the current match_state and remaining_time
-Events.SubscribeRemote("UpdateMatchState", function(match_state, remaining_time)
+Events.SubscribeRemote("UpdateMatchState", function(match_state, remaining_time, sky_hour_time)
 	Deathmatch.match_state = match_state
 	Deathmatch.remaining_time = remaining_time - 1
 
@@ -190,6 +178,8 @@ Events.SubscribeRemote("UpdateMatchState", function(match_state, remaining_time)
 
 	-- Calls UI to display the current match status and current remaining_time
 	MainHUD:CallEvent("UpdateMatchStatus", label, Deathmatch.remaining_time)
+
+	Sky.SetTimeOfDay(sky_hour_time, 0)
 end)
 
 -- Helpers for spawning sounds
@@ -201,17 +191,11 @@ Events.SubscribeRemote("SpawnActionSound", function(location, sound_asset)
 	Sound(location, sound_asset, false, true, SoundType.SFX, 1, 1, 400, 10000, AttenuationFunction.LogReverse)
 end)
 
--- When local Picks Up a Power Up, forces it to update the health and ammo
-Events.SubscribeRemote("PickedUpPowerUp", function()
-	Sound(Vector(), "nanos-world::A_VR_Open", true, true, SoundType.SFX, 1, 1)
 
-	local character = Client.GetLocalPlayer():GetControlledCharacter()
-	if (character) then
-		UpdateHealth(character:GetHealth())
+-- Steam Scoreboard
+Steam.FindLeaderboard("deathmatch")
+Client.SetEscapeMenuLeaderboard(true, "deathmatch", "Deathmatch Top Players Leaderboard")
 
-		local weapon = character:GetPicked()
-		if (weapon and weapon:IsA(Weapon)) then
-			UpdateAmmo(true, weapon:GetAmmoClip(), weapon:GetAmmoBag())
-		end
-	end
+Events.SubscribeRemote("SubmitScoreToSteamLeaderboard", function(score)
+	Steam.IncrementLeaderboardScore("deathmatch", score)
 end)
