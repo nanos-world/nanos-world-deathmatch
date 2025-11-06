@@ -400,10 +400,10 @@ function RespawnPlayer(player)
 	local character = player:GetControlledCharacter()
 
 	local spawn_point = DeathmatchSettings.spawn_locations[math.random(#DeathmatchSettings.spawn_locations)]
-	if (not spawn_point) then spawn_point = { location = Vector(math.random(-3000, 3000), math.random(-3000, 3000), 0), rotation = Rotator.Random() } end
+	if (not spawn_point) then spawn_point = { location = Vector(math.random(-3000, 3000), math.random(-3000, 3000), 0), rotation = Rotator(0, math.random(-180, 180), 0) } end
 
 	local spawn_location = spawn_point.location + Vector(0, 0, math.random(5000, 6000))
-	local spawn_rotation = spawn_point.rotation or Rotator.Random()
+	local spawn_rotation = spawn_point.rotation or Rotator(0, math.random(-180, 180), 0)
 
 	-- If player already has a character
 	if (character) then
