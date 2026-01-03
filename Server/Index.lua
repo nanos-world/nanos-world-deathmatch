@@ -425,6 +425,8 @@ function RespawnPlayer(player)
 		-- Bad meshes come with mouth open by default
 		character:SetMorphTarget("Close_Mouth", 1)
 
+		character:SetCanPickupPickables(false)
+		character:SetCanGrabProps(false)
 		character:SetCanDrop(false)
 		character:SetSpeedMultiplier(1.3)
 
