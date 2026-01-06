@@ -13,7 +13,7 @@ Events.Subscribe("ToggleVoice", function(name, enable) {
 		const span = document.createElement("span");
 		span.classList.add("voice_chat");
 		span.id = name;
-		span.innerHTML = name;
+		span.textContent = name;
 
 		document.querySelector("#voice_chats").prepend(span);
 	} else {
@@ -28,7 +28,7 @@ Events.Subscribe("ToggleVoice", function(name, enable) {
 Events.Subscribe("AddNotification", function(message, time) {
 	const span = document.createElement("span");
 	span.classList.add("notification");
-	span.innerHTML = message;
+	span.textContent = message;
 
 	document.querySelector("#notifications").prepend(span);
 
@@ -45,14 +45,14 @@ Events.Subscribe("UpdateWeaponAmmo", function(enable, clip, bag) {
 		document.querySelector("#weapon_ammo_container").style.display = "none";
 
 	// Using JQuery, overrides the HTML content of these SPANs with the new Ammo values
-	document.querySelector("#weapon_ammo_clip").innerHTML = clip;
-	document.querySelector("#weapon_ammo_bag").innerHTML = bag;
+	document.querySelector("#weapon_ammo_clip").textContent = clip;
+	document.querySelector("#weapon_ammo_bag").textContent = bag;
 });
 
 // Register for UpdateHealth custom event (from Lua)
 Events.Subscribe("UpdateHealth", function(health) {
 	// Overrides the HTML content of the SPAN with the new health value
-	document.querySelector("#health_current").innerHTML = health;
+	document.querySelector("#health_current").textContent = health;
 
 	// Bonus: make the background red when health below 25
 	document.querySelector("#health_container").style.backgroundColor = health <= 25 ? "#ff05053d" : "#0000003d";
@@ -109,7 +109,7 @@ function SortScoreboard() {
 		}
 
 		const rank_entry_score = rank_entry.querySelector(".scoreboard_rank_score");
-		rank_entry_score.innerHTML = score;
+		rank_entry_score.textContent = score;
 	}
 }
 
@@ -126,7 +126,7 @@ setInterval(function() {
 		const mins = ("00" + Math.floor(current_time / 60)).slice(-2);
 		const seconds = ("00" + (current_time % 60)).slice(-2);
 
-		document.querySelector("#match_status").innerHTML = `${match_status}${mins.toString()}:${seconds.toString()}`;
+		document.querySelector("#match_status").textContent = `${match_status}${mins.toString()}:${seconds.toString()}`;
 	}
 
 	// Note: this is always called because we update all players every 1 second
@@ -145,16 +145,16 @@ Events.Subscribe("UpdatePlayer", function(id, active, steam_id, name, score, kil
 			existing_scoreboard_entry.dataset.score = score;
 
 			const scoreboard_ping = existing_scoreboard_entry.querySelector("td.scoreboard_ping");
-			scoreboard_ping.innerHTML = ping;
+			scoreboard_ping.textContent = ping;
 
 			const scoreboard_score = existing_scoreboard_entry.querySelector("td.scoreboard_score");
-			scoreboard_score.innerHTML = score;
+			scoreboard_score.textContent = score;
 
 			const scoreboard_kills = existing_scoreboard_entry.querySelector("td.scoreboard_kills");
-			scoreboard_kills.innerHTML = kills;
+			scoreboard_kills.textContent = kills;
 
 			const scoreboard_deaths = existing_scoreboard_entry.querySelector("td.scoreboard_deaths");
-			scoreboard_deaths.innerHTML = deaths;
+			scoreboard_deaths.textContent = deaths;
 
 			return;
 		}
@@ -168,32 +168,32 @@ Events.Subscribe("UpdatePlayer", function(id, active, steam_id, name, score, kil
 
 		const scoreboard_entry_td_id = document.createElement("td");
 		scoreboard_entry_td_id.className = "scoreboard_id";
-		scoreboard_entry_td_id.innerHTML = id;
+		scoreboard_entry_td_id.textContent = id;
 		scoreboard_entry_tr.appendChild(scoreboard_entry_td_id);
 
 		const scoreboard_entry_td_name = document.createElement("td");
 		scoreboard_entry_td_name.className = "scoreboard_name";
-		scoreboard_entry_td_name.innerHTML = name;
+		scoreboard_entry_td_name.textContent = name;
 		scoreboard_entry_tr.appendChild(scoreboard_entry_td_name);
 
 		const scoreboard_entry_td_score = document.createElement("td");
 		scoreboard_entry_td_score.className = "scoreboard_score";
-		scoreboard_entry_td_score.innerHTML = score;
+		scoreboard_entry_td_score.textContent = score;
 		scoreboard_entry_tr.appendChild(scoreboard_entry_td_score);
 
 		const scoreboard_entry_td_kills = document.createElement("td");
 		scoreboard_entry_td_kills.className = "scoreboard_kills";
-		scoreboard_entry_td_kills.innerHTML = kills;
+		scoreboard_entry_td_kills.textContent = kills;
 		scoreboard_entry_tr.appendChild(scoreboard_entry_td_kills);
 
 		const scoreboard_entry_td_deaths = document.createElement("td");
 		scoreboard_entry_td_deaths.className = "scoreboard_deaths";
-		scoreboard_entry_td_deaths.innerHTML = deaths;
+		scoreboard_entry_td_deaths.textContent = deaths;
 		scoreboard_entry_tr.appendChild(scoreboard_entry_td_deaths);
 
 		const scoreboard_entry_td_ping = document.createElement("td");
 		scoreboard_entry_td_ping.className = "scoreboard_ping";
-		scoreboard_entry_td_ping.innerHTML = ping;
+		scoreboard_entry_td_ping.textContent = ping;
 		scoreboard_entry_tr.appendChild(scoreboard_entry_td_ping);
 
 		document.querySelector("#scoreboard_tbody").prepend(scoreboard_entry_tr);
