@@ -24,19 +24,6 @@ Events.Subscribe("ToggleVoice", function(name, enable) {
 	}
 });
 
-// Registers for Notifications from Scripting
-Events.Subscribe("AddNotification", function(message, time) {
-	const span = document.createElement("span");
-	span.classList.add("notification");
-	span.textContent = message;
-
-	document.querySelector("#notifications").prepend(span);
-
-	setTimeout(function(span) {
-		span.remove()
-	}, time, span);
-});
-
 // Register for UpdateWeaponAmmo custom event (from Lua)
 Events.Subscribe("UpdateWeaponAmmo", function(enable, clip, bag) {
 	if (enable)
