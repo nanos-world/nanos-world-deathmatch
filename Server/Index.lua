@@ -27,9 +27,9 @@ function SpawnActionSound(location, asset, player)
 	-- We make a small delay to sound better
 	Timer.SetTimeout(function(_asset)
 		if (player) then
-			Events.CallRemote("SpawnActionSound", player, location, _asset)
+			Events.CallRemote("SpawnActionSound", player, Reliability.Reliable, location, _asset)
 		else
-			Events.BroadcastRemote("SpawnActionSound", location, _asset)
+			Events.BroadcastRemote("SpawnActionSound", Reliability.Reliable, location, _asset)
 		end
 	end, 300, asset)
 end
@@ -166,7 +166,7 @@ function AddScore(player, score, id, label, use_current_label, silence)
 
 	if (not silence) then
 		-- Calls the player to notify the Score
-		Events.CallRemote("AddScore", player, score, id, label, use_current_label or false)
+		Events.CallRemote("AddScore", player, Reliability.Reliable, score, id, label, use_current_label or false)
 	end
 end
 
@@ -273,7 +273,7 @@ function UpdateMatchState(new_state)
 	elseif (new_state == MATCH_STATES.PREPARING) then
 		Deathmatch.remaining_time = DeathmatchSettings.preparing_time
 
-		Events.BroadcastRemote("SpawnSound", Vector(), "unreal-tournament-announcer::A_Prepare", true, 1, 1)
+		Events.BroadcastRemote("SpawnSound", Reliability.Reliable, Vector(), "unreal-tournament-announcer::A_Prepare", true, 1, 1)
 
 		Console.Log("Preparing!")
 		Chat.BroadcastMessage("<grey>Preparing!</>")
@@ -290,7 +290,7 @@ function UpdateMatchState(new_state)
 		Deathmatch.remaining_time = DeathmatchSettings.match_time
 		Deathmatch.first_blood = false
 
-		Events.BroadcastRemote("SpawnSound", Vector(), "unreal-tournament-announcer::A_Proceed", true, 1, 1)
+		Events.BroadcastRemote("SpawnSound", Reliability.Reliable, Vector(), "unreal-tournament-announcer::A_Proceed", true, 1, 1)
 
 		Console.Log("Round started!")
 		Chat.BroadcastMessage("<grey>Round Started!</>")
@@ -325,16 +325,16 @@ function UpdateMatchState(new_state)
 		for rank, player in pairs(player_rank) do
 			-- Plays announcer sound if winner or last place
 			if (rank == 1) then
-				Events.CallRemote("SpawnSound", player, Vector(), "unreal-tournament-announcer::A_Winner", true, 1, 1)
+				Events.CallRemote("SpawnSound", player, Reliability.Reliable, Vector(), "unreal-tournament-announcer::A_Winner", true, 1, 1)
 			elseif (rank == #player_rank) then
-				Events.CallRemote("SpawnSound", player, Vector(), "unreal-tournament-announcer::A_LastPlace", true, 1, 1)
+				Events.CallRemote("SpawnSound", player, Reliability.Reliable, Vector(), "unreal-tournament-announcer::A_LastPlace", true, 1, 1)
 			end
 
 			local player_score = player:GetValue("Score") or 0
 
 			Chat.BroadcastMessage(tostring(rank) .. "# <cyan>" .. player:GetName() .. "</>: " .. tostring(player_score))
 
-			Events.CallRemote("SubmitScoreToSteamLeaderboard", player, player_score)
+			Events.CallRemote("SubmitScoreToSteamLeaderboard", player, Reliability.Reliable, player_score)
 		end
 
 		Chat.BroadcastMessage("<grey>=============================</>")
@@ -527,7 +527,7 @@ function SpawnPowerUp(location)
 				weapon:SetAmmoBag(math.min(weapon:GetAmmoBag() + 50, 100))
 			end
 
-			Events.CallRemote("SpawnSound", object:GetPlayer(), Vector(), "nanos-world::A_VR_Open", true, 1, 1)
+			Events.CallRemote("SpawnSound", object:GetPlayer(), Reliability.Reliable, Vector(), "nanos-world::A_VR_Open", true, 1, 1)
 
 			self:Destroy()
 		end
@@ -540,9 +540,9 @@ end
 -- Helper for updating the player's match state
 function UpdatePlayerMatchState(player)
 	if (player) then
-		Events.CallRemote("UpdateMatchState", player, Deathmatch.match_state, Deathmatch.remaining_time, Deathmatch.sky_hour_time)
+		Events.CallRemote("UpdateMatchState", player, Reliability.Reliable, Deathmatch.match_state, Deathmatch.remaining_time, Deathmatch.sky_hour_time)
 	else
-		Events.BroadcastRemote("UpdateMatchState", Deathmatch.match_state, Deathmatch.remaining_time, Deathmatch.sky_hour_time)
+		Events.BroadcastRemote("UpdateMatchState", Reliability.Reliable, Deathmatch.match_state, Deathmatch.remaining_time, Deathmatch.sky_hour_time)
 	end
 end
 
@@ -557,7 +557,7 @@ function AnnounceCountdown()
 	local announcer = GetCountdownAnnouncer()
 	if (not announcer) then return end
 
-	Events.BroadcastRemote("SpawnSound", Vector(), announcer, true, 1, 1)
+	Events.BroadcastRemote("SpawnSound", Reliability.Reliable, Vector(), announcer, true, 1, 1)
 end
 
 -- Server Tick to check remaining times
